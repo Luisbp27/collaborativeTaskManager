@@ -1,15 +1,15 @@
 include "console.iol"
-include "http.iol"
+include "/protocols/http.iol"
 
 type TaskRequest: void {
-    .title: string,
-    .description: string,
-    .dueDate: string,
-    .assignedTo: string
+    title: string,
+    description: string,
+    dueDate: string,
+    assignedTo: string
 }
 
 type TaskResponse: void {
-    .message: string
+    message: string
 }
 
 interface TaskServiceInterface {

@@ -1,5 +1,5 @@
 include "console.iol"
-include "http.iol"
+include "/protocols/http.iol"
 
 outputPort UserManager {
     location: "socket://localhost:1235"

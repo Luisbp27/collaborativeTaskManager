@@ -1,13 +1,13 @@
 include "console.iol"
-include "http.iol"
+include "/protocols/http.iol"
 
 type NotificationRequest: void {
-    .userId: string,
-    .message: string
+    userId: string,
+    message: string
 }
 
 type NotificationResponse: void {
-    .status: string
+    status: string
 }
 
 interface NotificationInterface {
