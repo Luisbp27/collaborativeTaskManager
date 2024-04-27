@@ -25,12 +25,12 @@ inputPort UserManagementPort {
 
 main {
     registerUser(req)(res) {
-        // Register user logic (simplified)
+        // Adding user in a list
         res.message = "User " + req.username + " registered successfully."
     }
 
-    modifyUser(req)(res) {
-        // Modify user logic (simplified)
-        res.message = "User " + req.username + " modified successfully."
+    checkUser(req)(res) {
+        // Check if the user is in the list
+        res.message = "User " + req.username + " checked successfully."
     }
 }
