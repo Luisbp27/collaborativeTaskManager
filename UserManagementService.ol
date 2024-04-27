@@ -2,8 +2,9 @@ include "console.iol"
 include "/protocols/http.iol"
 
 type UserRequest: void {
-    username: string,
-    password: string,
+    userId: int
+    username: string
+    password: string
     email: string
 }
 
@@ -13,7 +14,7 @@ type UserResponse: void {
 
 interface UserManagementInterface {
     RequestResponse: registerUser(UserRequest)(UserResponse),
-    authenticateUser(UserRequest)(UserResponse)
+    modifyUser(UserRequest)(UserResponse)
 }
 
 inputPort UserManagementPort {
@@ -28,8 +29,8 @@ main {
         res.message = "User " + req.username + " registered successfully."
     }
 
-    authenticateUser(req)(res) {
-        // Authentication logic (simplified)
-        res.message = "User " + req.username + " authenticated successfully."
+    modifyUser(req)(res) {
+        // Modify user logic (simplified)
+        res.message = "User " + req.username + " modified successfully."
     }
 }
