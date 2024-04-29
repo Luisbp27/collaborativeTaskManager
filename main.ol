@@ -1,7 +1,7 @@
 include "console.iol"
 include "/protocols/http.iol"
 
-execution { concurrent }
+execution: concurrent
 
 outputPort UserManager {
     location: "socket://localhost:1235"
@@ -31,7 +31,20 @@ main {
         in(username);
 
         // Check if the user is registered in the system
+        checkUser@UserManager(username)(res);
+        if (res == "false") {
+            println@Console( "User not found. Registering a new user..." )();
+            println@Console( "Enter username:" )();
+            in(username);
+            println@Console( "Enter password:" )();
+            in(password);
 
+            // User registration
+            registerUser@UserManager(user)();
+            println@Console( "User registered correctly!" )();
+        } else {
+            println@Console( "User found!" )();
+        }
 
     } else {
         println@Console( "Registering a new user..." )();

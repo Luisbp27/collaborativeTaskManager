@@ -14,7 +14,8 @@ type TaskResponse: void {
 }
 
 interface TaskServiceInterface {
-    RequestResponse: createTask(TaskRequest)(TaskResponse),
+    RequestResponse:
+    createTask(TaskRequest)(TaskResponse),
     modifyTaskStatus(TaskRequest)(TaskResponse),
     deleteTask(TaskRequest)(TaskResponse),
     listAllTasks(TaskRequest)(TaskResponse),

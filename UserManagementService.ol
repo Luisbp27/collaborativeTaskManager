@@ -13,7 +13,8 @@ type UserResponse: void {
 }
 
 interface UserManagementInterface {
-    RequestResponse: registerUser(UserRequest)(UserResponse),
+    RequestResponse:
+    registerUser(UserRequest)(UserResponse),
     modifyUser(UserRequest)(UserResponse)
 }
 

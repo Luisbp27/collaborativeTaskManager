@@ -12,7 +12,9 @@ type NotificationResponse: void {
 }
 
 interface NotificationInterface {
-    OneWay: sendNotification(NotificationRequest), modifyPreference(NotificationRequest)
+    RequestResponse:
+    sendNotification(NotificationRequest)(NotificationResponse),
+    modifyPreference(NotificationRequest)(NotificationResponse)
 }
 
 inputPort NotificationPort {
