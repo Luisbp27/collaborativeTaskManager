@@ -4,7 +4,6 @@ include "/protocols/http.iol"
 type NotificationRequest: void {
     userId: string
     message: string
-    preference: string
 }
 
 type NotificationResponse: void {
@@ -14,7 +13,6 @@ type NotificationResponse: void {
 interface NotificationInterface {
     RequestResponse:
     sendNotification(NotificationRequest)(NotificationResponse),
-    modifyPreference(NotificationRequest)(NotificationResponse)
 }
 
 inputPort NotificationPort {
@@ -24,16 +22,15 @@ inputPort NotificationPort {
 }
 
 main {
+    i = 0
     sendNotification(req)(res) {
-        // Send notification logic
-        println@Console("User notification preference: " + req.preference)()
+
+        NotificationRequest.userId[i] = req.userId
+        NotificationRequest.message[i] = req.message
+        i = i + 1
+
+        // Send notification to user
         println@Console("Notification sent to user " + req.userId + ": " + req.message)()
         res.status = "Notification sent"
-    }
-
-    modifyPreference(req)(res) {
-        // Modify preference logic
-        println@Console("User " + req.userId + " preference modified to: " + req.preference)()
-        res.status = "Preference modified"
     }
 }

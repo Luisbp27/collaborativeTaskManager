@@ -31,8 +31,12 @@ main {
         in(username);
 
         // Check if the user is registered in the system
-        checkUser@UserManager(username)(res);
-        if (res == "false") {
+        checkUser@UserManager(username)(res)
+
+        if (res.userRegistered == true) {
+            println@Console( "Enter password:" )();
+            in(password);
+        } else {
             println@Console( "User not found. Registering a new user..." )();
             println@Console( "Enter username:" )();
             in(username);
@@ -42,16 +46,14 @@ main {
             // User registration
             registerUser@UserManager(user)();
             println@Console( "User registered correctly!" )();
-        } else {
-            println@Console( "User found!" )();
         }
 
     } else {
-        println@Console( "Registering a new user..." )();
-        println@Console( "Enter username:" )();
-        in(username);
-        println@Console( "Enter password:" )();
-        in(password);
+        println@Console( "Registering a new user..." )()
+        println@Console( "Enter username:" )()
+        in(username)
+        println@Console( "Enter password:" )()
+        in(password)
 
         // User registration
         registerUser@UserManager(user)();
@@ -62,11 +64,14 @@ main {
     println@Console( "####################################" )();
     println@Console( "Select an option:" )();
     println@Console( "1. Create a new task" )();
-    println@Console( "2. List all tasks" )();
-    println@Console( "3. List all tasks assigned to a user" )();
-    println@Console( "4. Modify task status" )();
-    println@Console( "5. Modify user notification preference" )();
-    println@Console( "6. Exit" )();
+    println@Console( "2. Delete a task" )();
+    println@Console( "3. List all tasks" )();
+    println@Console( "4. List all tasks assigned to a user" )();
+    println@Console( "5. Modify task user" )();
+    println@Console( "6. Modify task status" )();
+    println@Console( "7. Modify user notification preference" )();
+    println@Console( "8. Show notifications historial of a user" )();
+    println@Console( "9. Exit" )();
     println@Console( "####################################" )();
     in(option);
 
@@ -93,13 +98,4 @@ main {
             }
         }
     }
-
-
-    // Simulate task creation
-    taskResponse = createTask@TaskManager({title: "New Project Task", description: "Complete the integration of the Jolie system", dueDate: "2024-05-01", assignedTo: user.username})();
-
-    // Notify user of the task creation
-    sendNotification@NotificationManager({userId: username, message: "You have a new task assigned: " + taskResponse.message})();
-
-    println@Console("Task created and notification sent.")();
 }
