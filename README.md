@@ -67,6 +67,19 @@ application designed to facilitate efficient task creation, assignment, and trac
 - Task Tracking Process
 - Notification Process
 
-## External Dependencies
+## Todo List
 
-- Utilize external libraries or frameworks for implementing specific features (e.g., user interface components).
+- [x] Notification Service
+  - [x] sendNotification()
+  - [x] notificationsHistorialByUser()
+- [x] Task Service
+  - [x] createTask()
+  - [x] assignTask()
+  - [x] updateTaskStatus()
+  - [x] deleteTask()
+  - [x] listAllTasks()
+  - [x] listTasksByUser()
+- [x] User Management Service
+  - [x] registerUser()
+  - [x] authUser()
+  - [x] deleteUser()

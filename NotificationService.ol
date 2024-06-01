@@ -10,27 +10,60 @@ type NotificationResponse: void {
     status: string
 }
 
-interface NotificationInterface {
-    RequestResponse:
-    sendNotification(NotificationRequest)(NotificationResponse),
+type Notification: void {
+    userId: string
+    message: string
 }
 
-inputPort NotificationPort {
-    location: "socket://localhost:1236"
-    protocol: http
-    interfaces: NotificationInterface
+type Notifications: void {
+    notification*: Notification
 }
 
-main {
-    i = 0
-    sendNotification(req)(res) {
+service NotificationService() {
 
-        NotificationRequest.userId[i] = req.userId
-        NotificationRequest.message[i] = req.message
-        i = i + 1
+    execution: concurrent
 
-        // Send notification to user
-        println@Console("Notification sent to user " + req.userId + ": " + req.message)()
-        res.status = "Notification sent"
+    inputPort NotificationPort {
+        location: "socket://localhost:1236"
+        protocol: http
+        interfaces: NotificationInterface
+    }
+
+    main {
+        i = 0
+        sendNotification(req)(res) {
+            notifications.userId[i] = req.userId
+            notifications.message[i] = req.message
+            i = i + 1
+
+            // Send notification to user
+            println@Console("Notification sent to user " + req.userId + ": " + req.message)()
+            res.message = "Notification sent"
+        }
+
+        notificationsHistorialByUser(req)(res) {
+            println@Console("Showing notifications for user " + req.userId)()
+            println@Console( " " )()
+
+            for (j = 0, j < i, j++) {
+                if (notifications.userId[j] == req.userId) {
+                    println@Console("Notification Nº" + j + ": " + notifications.message[j])()
+                }
+            }
+        }
+
+        deleteAllNotificationsByUser(req)(res) {
+            println@Console("Deleting all notifications for user " + req.userId)()
+            println@Console( " " )()
+
+            for (j = 0, j < i, j++) {
+                if (notifications.userId[j] == req.userId) {
+                    notifications.userId[j] = ""
+                    notifications.message[j] = ""
+                }
+            }
+
+            res.message = "Notifications deleted"
+        }
     }
 }

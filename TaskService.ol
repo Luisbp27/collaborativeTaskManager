@@ -14,83 +14,99 @@ type TaskResponse: void {
     message: string
 }
 
-interface TaskServiceInterface {
-    RequestResponse:
-    createTask(TaskRequest)(TaskResponse),
-    modifyTaskStatus(TaskRequest)(TaskResponse),
-    deleteTask(TaskRequest)(TaskResponse),
-    listAllTasks(TaskRequest)(TaskResponse),
-    listTasksByUser(TaskRequest)(TaskResponse)
+type Task: void {
+    id: int
+    title: string
+    description: string
+    dueDate: string
+    assignedTo: string
+    status: string
 }
 
-inputPort TaskServicePort {
-    location: "socket://localhost:1234"
-    protocol: http
-    interfaces: TaskServiceInterface
+type Tasks: void {
+    task*: Task
 }
 
-main {
-    i = 0
-    createTask(req)(res) {
-        // Store task in a list of tasks
-        TaskRequest.id[i] = i
-        TaskRequest.title[i] = req.title
-        TaskRequest.description[i] = req.description
-        TaskRequest.dueDate[i] = req.dueDate
-        TaskRequest.assignedTo[i] = req.assignedTo
-        TaskRequest.status[i] = req.status
+service TaskService() {
 
-        i = i + 1
+    execution: concurrent
 
-        println@Console("Task Created: " + req.title + ", Assigned to: " + req.assignedTo)()
-        res.message = "Task successfully created and assigned."
+    inputPort TaskServicePort {
+        location: "socket://localhost:1234"
+        protocol: http
+        interfaces: TaskServiceInterface
     }
 
-    modifyTaskStatus(req)(res) {
-        // Modify task status
-        TaskRequest.status[req.id] = req.status
+    main {
+        i = 0
+        createTask(req)(res) {
+            // Store task in a list of tasks
+            task.id[i] = i
+            task.title[i] = req.title
+            task.description[i] = req.description
+            task.dueDate[i] = req.dueDate
+            task.assignedTo[i] = req.assignedTo
+            task.status[i] = req.status
 
-        println@Console("Task Status Modified: " + req.title + ", New Status: " + req.status)()
-        res.message = "Task status successfully modified."
-    }
+            i = i + 1
 
-    deleteTask(req)(res) {
-        // Shift the last task to the deleted task position
-        TaskRequest.id[req.id] = TaskRequest.id[i - 1]
-        TaskRequest.title[req.id] = TaskRequest.title[i - 1]
-        TaskRequest.description[req.id] = TaskRequest.description[i - 1]
-        TaskRequest.dueDate[req.id] = TaskRequest.dueDate[i - 1]
-        TaskRequest.assignedTo[req.id] = TaskRequest.assignedTo[i - 1]
-        TaskRequest.status[req.id] = TaskRequest.status[i - 1]
-
-        i = i - 1
-
-        println@Console("Task Deleted: " + req.title)()
-        res.message = "Task successfully deleted."
-    }
-
-    listAllTasks(req)(res) {
-        // List all tasks
-        println@Console("Listing all tasks...")()
-
-        for (j = 0, j < i, j++) {
-            println@Console("Task ID: " + TaskRequest.id[i] + ", Title: " + TaskRequest.title[i] + ", Assigned to: " + TaskRequest.assignedTo[i] + ", Status: " + TaskRequest.status[i])()
+            println@Console("Task Created: " + req.title + ", Assigned to: " + req.assignedTo)()
+            res.message = "Task successfully created and assigned."
         }
 
-        res.message = "Tasks listed correctly."
-    }
+        modifyTaskUser(req)(res) {
+            // Modify task user
+            task.assignedTo[req.id] = req.assignedTo
 
-    listTasksByUser(req)(res) {
-        // List tasks by user
-        println@Console("Listing tasks by user: " + req.assignedTo)()
+            println@Console("Task User Modified: " + req.title + ", New User: " + req.assignedTo)()
+            res.message = "Task user successfully modified."
+        }
 
-        for (j = 0, j < i, j++) {
-            if (TaskRequest.assignedTo[j] == req.assignedTo) {
-                println@Console("Task ID: " + TaskRequest.id[j] + ", Title: " + TaskRequest.title[j] + ", Assigned to: " + TaskRequest.assignedTo[j] + ", Status: " + TaskRequest.status[j])()
+        modifyTaskStatus(req)(res) {
+            // Modify task status
+            task.status[req.id] = req.status
+
+            println@Console("Task Status Modified: " + req.title + ", New Status: " + req.status)()
+            res.message = "Task status successfully modified."
+        }
+
+        deleteTask(req)(res) {
+            // Shift the last task to the deleted task position
+            task.id[req.id] = task.id[i - 1]
+            task.title[req.id] = task.title[i - 1]
+            task.description[req.id] = task.description[i - 1]
+            task.dueDate[req.id] = task.dueDate[i - 1]
+            task.assignedTo[req.id] = task.assignedTo[i - 1]
+            task.status[req.id] = task.status[i - 1]
+
+            i = i - 1
+
+            println@Console("Task Deleted: " + req.title)()
+            res.message = "Task successfully deleted."
+        }
+
+        listAllTasks(req)(res) {
+            // List all tasks
+            println@Console("Listing all tasks...")()
+
+            for (j = 0, j < i, j++) {
+                println@Console("Task ID: " + task.id[i] + ", Title: " + task.title[i] + ", Assigned to: " + task.assignedTo[i] + ", Status: " + task.status[i])()
             }
+
+            res.message = "Tasks listed correctly."
         }
 
-        res.message = "Tasks listed."
-    }
+        listTasksByUser(req)(res) {
+            // List tasks by user
+            println@Console("Listing tasks by user: " + req.assignedTo)()
 
+            for (j = 0, j < i, j++) {
+                if (TaskRequest.assignedTo[j] == req.assignedTo) {
+                    println@Console("Task ID: " + task.id[j] + ", Title: " + task.title[j] + ", Assigned to: " + task.assignedTo[j] + ", Status: " + task.status[j])()
+                }
+            }
+
+            res.message = "Tasks listed."
+        }
+    }
 }
