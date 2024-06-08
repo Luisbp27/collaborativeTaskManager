@@ -72,7 +72,6 @@ service UserManagementService() {
 
             // Delete all the notifications of the deleted user
             deleteAllNotificationsByUser@NotificationManager(req)(res)
-            println@Console(res.message)
         }]
     }
 }

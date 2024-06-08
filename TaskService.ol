@@ -13,19 +13,20 @@ service TaskService() {
         interfaces: TaskServiceInterface
     }
 
-    init {
+    init {
         global.task_iter = 0
     }
 
     main {
         [createTask(req)(res) {
             // Store task in a list of tasks
-            task.id[global.task_iter] = global.task_iter
-            task.title[global.task_iter] = req.title
-            task.description[global.task_iter] = req.description
-            task.dueDate[global.task_iter] = req.dueDate
-            task.assignedTo[global.task_iter] = req.assignedTo
-            task.status[global.task_iter] = req.status
+            id = global.task_iter
+            task.id[id] = id
+            task.title[id] = req.title
+            task.description[id] = req.description
+            task.dueDate[id] = req.dueDate
+            task.assignedTo[id] = req.assignedTo
+            task.status[id] = req.status
 
             global.task_iter++
 
@@ -50,13 +51,14 @@ service TaskService() {
         }]
 
         [deleteTask(req)(res) {
+            id_ = global.task_iter - 1
             // Shift the last task to the deleted task position
-            task.id[req.id] = task.id[global.task_iter - 1]
-            task.title[req.id] = task.title[global.task_iter - 1]
-            task.description[req.id] = task.description[global.task_iter - 1]
-            task.dueDate[req.id] = task.dueDate[global.task_iter - 1]
-            task.assignedTo[req.id] = task.assignedTo[global.task_iter - 1]
-            task.status[req.id] = task.status[global.task_iter - 1]
+            task.id[req.id] = task.id[id_]
+            task.title[req.id] = task.title[id_]
+            task.description[req.id] = task.description[id_]
+            task.dueDate[req.id] = task.dueDate[id_]
+            task.assignedTo[req.id] = task.assignedTo[id_]
+            task.status[req.id] = task.status[id_]
 
             global.task_iter--
 
@@ -68,9 +70,11 @@ service TaskService() {
             // List all tasks
             println@Console("Listing all tasks...")()
 
-            for (j = 0, j < global.task_iter, j++) {
+            id = global.task_iter
+
+            for (j = 0, j < id, j++) {
                 println@Console(
-                    "Task ID: " + task.id[global.task_iter] + ", Title: " + task.title[global.task_iter] + ", Assigned to: " + task.assignedTo[global.task_iter] + ", Status: " + task.status[global.task_iter]
+                    "Task ID: " + task.id[id] + ", Title: " + task.title[id] + ", Assigned to: " + task.assignedTo[id] + ", Status: " + task.status[id]
                 )()
             }
 
