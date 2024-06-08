@@ -8,8 +8,9 @@ interface NotificationInterface {
 }
 
 interface TaskServiceInterface {
+    OneWay:
+        createTask(Task),
     RequestResponse:
-        createTask(TaskRequest)(TaskResponse),
         modifyTaskUser(TaskRequest)(TaskResponse),
         modifyTaskStatus(TaskRequest)(TaskResponse),
         deleteTask(TaskRequest)(TaskResponse),

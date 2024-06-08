@@ -57,7 +57,6 @@ type UserRequest: void {
 
 type UserResponse: void {
     userRegistered : bool
-    message: string
 }
 
 type User: void {

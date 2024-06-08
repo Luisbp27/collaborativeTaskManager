@@ -1,5 +1,6 @@
 include "/protocols/http.iol"
 include "/interfaces/interfaces.iol"
+include "interfaces/objects.iol"
 include "console.iol"
 
 outputPort UserManager {
@@ -50,16 +51,16 @@ init {
     } else {
         println@Console( "Registering a new user..." )();
         println@Console( "Enter username:" )();
-        readLine@Console(username)();
+        readLine@Console(user.name)();
         println@Console( "Enter password:" )();
-        readLine@Console(password)();
+        readLine@Console(user.password)();
 
         // User registration
-        registerUser@UserManager(username);
+        registerUser@UserManager(user);
         println@Console( "User registered correctly!" )()
     }
 
-    println@Console( "Welcome " + username + "!" )()
+    println@Console( "Welcome " + user.name + "!" )()
 }
 
 main {
@@ -89,8 +90,7 @@ main {
             readLine@Console(req.taskUser)();
 
             // Create a new task
-            createTask@TaskManager(req)(res);
-            println@Console( "Task created correctly!" )()
+            createTask@TaskManager(req)
 
         } else if (option == "2") {
             println@Console( "Enter task name:" )();
@@ -108,10 +108,10 @@ main {
 
         } else if (option == "4") {
             println@Console( "Enter username:" )();
-            readLine@Console(username)();
+            readLine@Console(user.name)();
 
             // List all tasks assigned to a user
-            listTasksByUser@TaskManager(username)(res);
+            listTasksByUser@TaskManager(user.name)(res);
             println@Console( "Tasks:" )();
             println@Console( res.tasks )()
 
@@ -137,10 +137,10 @@ main {
 
         } else if (option == "7") {
             println@Console( "Enter username:" )();
-            readLine@Console(username)();
+            readLine@Console(user.name)();
 
             // Show notifications historial of a user
-            notificationsHistorialByUser@NotificationManager(username)(res);
+            notificationsHistorialByUser@NotificationManager(user.name)(res);
             println@Console( "Notifications:" )();
             println@Console( res.notifications )()
 

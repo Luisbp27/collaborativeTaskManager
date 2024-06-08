@@ -28,6 +28,7 @@ service UserManagementService() {
         [registerUser(req) {
             synchronized( token ) {
                 // Adding user
+                println@Console("Registering user " + req.username + " with id " + req.userId)
                 users[global.user_iter].username = req.username
                 users[global.user_iter].id = req.userId
                 global.user_iter++
@@ -54,10 +55,10 @@ service UserManagementService() {
                 // Send response
                 if (found == false) {
                     res.userRegistered = false
-                    res.message = "User " + req.username + " is not registered."
+                    println@Console("User " + req.username + " is not registered.")
                 } else {
                     res.userRegistered = true
-                    res.message = "User " + req.username + " is registered."
+                    println@Console("User " + req.username + " is registered.")
                 }
             }
         }]
@@ -68,7 +69,7 @@ service UserManagementService() {
 
                 // Delete user
                 users[j].username = ""
-                users[j].id = 0
+                users[j].id = -1
 
                 // Get the last user and move it to the deleted user position
                 users[j].username = users[global.user_iter].username
@@ -76,7 +77,7 @@ service UserManagementService() {
                 global.user_iter--
 
                 // Delete all the notifications of the deleted user
-                deleteAllNotificationsByUser@NotificationManager(req)(res)
+                // deleteAllNotificationsByUser@NotificationManager(req)(res)
             }
         }]
     }
