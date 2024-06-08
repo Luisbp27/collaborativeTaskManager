@@ -19,19 +19,20 @@ service TaskService() {
 
     main {
         [createTask(req)(res) {
-            // Store task in a list of tasks
-            id = global.task_iter
-            task.id[id] = id
-            task.title[id] = req.title
-            task.description[id] = req.description
-            task.dueDate[id] = req.dueDate
-            task.assignedTo[id] = req.assignedTo
-            task.status[id] = req.status
+            synchronized( token ) {
+                // Store task in a list of tasks
+                task.id[global.task_iter] = global.task_iter
+                task.title[global.task_iter] = req.title
+                task.description[global.task_iter] = req.description
+                task.dueDate[global.task_iter] = req.dueDate
+                task.assignedTo[global.task_iter] = req.assignedTo
+                task.status[global.task_iter] = req.status
 
-            global.task_iter++
+                global.task_iter++
 
-            println@Console("Task Created: " + req.title + ", Assigned to: " + req.assignedTo)()
-            res.message = "Task successfully created and assigned."
+                println@Console("Task Created: " + req.title + ", Assigned to: " + req.assignedTo)()
+                res.message = "Task successfully created and assigned."
+            }
         }]
 
         [modifyTaskUser(req)(res) {
@@ -51,47 +52,51 @@ service TaskService() {
         }]
 
         [deleteTask(req)(res) {
-            id_ = global.task_iter - 1
-            // Shift the last task to the deleted task position
-            task.id[req.id] = task.id[id_]
-            task.title[req.id] = task.title[id_]
-            task.description[req.id] = task.description[id_]
-            task.dueDate[req.id] = task.dueDate[id_]
-            task.assignedTo[req.id] = task.assignedTo[id_]
-            task.status[req.id] = task.status[id_]
+            synchronized( token ) {
+                global.task_iter--
 
-            global.task_iter--
+                // Shift the last task to the deleted task position
+                task.id[req.id] = task.id[global.task_iter]
+                task.title[req.id] = task.title[global.task_iter]
+                task.description[req.id] = task.description[global.task_iter]
+                task.dueDate[req.id] = task.dueDate[global.task_iter]
+                task.assignedTo[req.id] = task.assignedTo[global.task_iter]
+                task.status[req.id] = task.status[global.task_iter]
 
-            println@Console("Task Deleted: " + req.title)()
-            res.message = "Task successfully deleted."
+                println@Console("Task Deleted: " + req.title)()
+                res.message = "Task successfully deleted."
+            }
         }]
 
         [listAllTasks(req)(res) {
-            // List all tasks
-            println@Console("Listing all tasks...")()
+            synchronized( token ) {
+                // List all tasks
+                println@Console("Listing all tasks...")()
 
-            id = global.task_iter
+                for (j = 0, j < global.task_iter, j++) {
+                    println@Console(
+                        "Task ID: " + task.id[global.task_iter] + ", Title: " + task.title[global.task_iter] + ", Assigned to: " + task.assignedTo[global.task_iter] + ", Status: " + task.status[global.task_iter]
+                    )()
+                }
 
-            for (j = 0, j < id, j++) {
-                println@Console(
-                    "Task ID: " + task.id[id] + ", Title: " + task.title[id] + ", Assigned to: " + task.assignedTo[id] + ", Status: " + task.status[id]
-                )()
+                res.message = "Tasks listed correctly."
             }
 
-            res.message = "Tasks listed correctly."
         }]
 
         [listTasksByUser(req)(res) {
-            // List tasks by user
-            println@Console("Listing tasks by user: " + req.assignedTo)()
+            synchronized( token ) {
+                // List tasks by user
+                println@Console("Listing tasks by user: " + req.assignedTo)()
 
-            for (j = 0, j < global.task_iter, j++) {
-                if (TaskRequest.assignedTo[j] == req.assignedTo) {
-                    println@Console("Task ID: " + task.id[j] + ", Title: " + task.title[j] + ", Assigned to: " + task.assignedTo[j] + ", Status: " + task.status[j])()
+                for (j = 0, j < global.task_iter, j++) {
+                    if (TaskRequest.assignedTo[j] == req.assignedTo) {
+                        println@Console("Task ID: " + task.id[j] + ", Title: " + task.title[j] + ", Assigned to: " + task.assignedTo[j] + ", Status: " + task.status[j])()
+                    }
                 }
-            }
 
-            res.message = "Tasks listed."
+                res.message = "Tasks listed."
+            }
         }]
     }
 }

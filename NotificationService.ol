@@ -19,38 +19,44 @@ service NotificationService() {
 
     main {
         [sendNotification(req)(res) {
-            notifications.userId[global.not_iter] = req.userId
-            notifications.message[global.not_iter] = req.message
-            global.not_iter++
+            synchronized( token ) {
+                notifications.userId[global.not_iter] = req.userId
+                notifications.message[global.not_iter] = req.message
+                global.not_iter++
 
-            // Send notification to user
-            println@Console("Notification sent to user " + req.userId + ": " + req.message)()
-            res.message = "Notification sent"
+                // Send notification to user
+                println@Console("Notification sent to user " + req.userId + ": " + req.message)()
+                res.message = "Notification sent"
+            }
         }]
 
         [notificationsHistorialByUser(req)(res) {
-            println@Console("Showing notifications for user " + req.userId)()
-            println@Console( " " )()
+            synchronized( token ) {
+                println@Console("Showing notifications for user " + req.userId)()
+                println@Console( " " )()
 
-            for (j = 0, j < global.not_iter, j++) {
-                if (notifications.userId[j] == req.userId) {
-                    println@Console("Notification Nº" + j + ": " + notifications.message[j])()
+                for (j = 0, j < global.not_iter, j++) {
+                    if (notifications.userId[j] == req.userId) {
+                        println@Console("Notification Nº" + j + ": " + notifications.message[j])()
+                    }
                 }
             }
         }]
 
         [deleteAllNotificationsByUser(req)(res) {
-            println@Console("Deleting all notifications for user " + req.userId)()
-            println@Console( " " )()
+            synchronized( token ) {
+                println@Console("Deleting all notifications for user " + req.userId)()
+                println@Console( " " )()
 
-            for (j = 0, j < global.not_iter, j++) {
-                if (notifications.userId[j] == req.userId) {
-                    notifications.userId[j] = ""
-                    notifications.message[j] = ""
+                for (j = 0, j < global.not_iter, j++) {
+                    if (notifications.userId[j] == req.userId) {
+                        notifications.userId[j] = ""
+                        notifications.message[j] = ""
+                    }
                 }
-            }
 
-            res.message = "Notifications deleted"
+                res.message = "Notifications deleted"
+                }
         }]
     }
 }
