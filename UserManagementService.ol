@@ -25,17 +25,17 @@ service UserManagementService() {
     }
 
     main {
-        [registerUser(req)(res) {
+        [registerUser(req) {
             synchronized( token ) {
                 // Adding user
-                users.username[global.user_iter] = req.username
-                users.id[global.user_iter] = req.userId
+                users[global.user_iter].username = req.username
+                users[global.user_iter].id = req.userId
                 global.user_iter++
 
                 // Send notification
-                req.userId = users.id[global.user_iter]
-                req.message = "User registered successfully."
-                sendNotification@NotificationManager(req)(res)
+                //req.userId = users.id[global.user_iter]
+                //res.message = "User registered successfully."
+                //sendNotification@NotificationManager(req)(res)
             }
         }]
 
@@ -45,7 +45,7 @@ service UserManagementService() {
                 found = false
                 j = 0
                 while (found == false && j < global.user_iter) {
-                    if (users.username[j] == req.username) {
+                    if (users[j].username == req.username) {
                         found = true
                     }
                     j = j + 1
@@ -67,12 +67,12 @@ service UserManagementService() {
                 j = req.userId
 
                 // Delete user
-                users.username[j] = ""
-                users.id[j] = 0
+                users[j].username = ""
+                users[j].id = 0
 
                 // Get the last user and move it to the deleted user position
-                users.username[j] = users.username[global.user_iter]
-                users.id[j] = users.id[global.user_iter]
+                users[j].username = users[global.user_iter].username
+                users[j].id = users[global.user_iter].id
                 global.user_iter--
 
                 // Delete all the notifications of the deleted user

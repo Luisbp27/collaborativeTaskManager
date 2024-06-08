@@ -2,9 +2,9 @@ include "objects.iol"
 
 interface NotificationInterface {
     RequestResponse:
-    sendNotification(NotificationRequest)(NotificationResponse),
-    notificationsHistorialByUser(NotificationRequest)(NotificationResponse),
-    deleteAllNotificationsByUser(NotificationRequest)(NotificationResponse)
+        sendNotification(NotificationRequest)(NotificationResponse),
+        notificationsHistorialByUser(NotificationRequest)(NotificationResponse),
+        deleteAllNotificationsByUser(NotificationRequest)(NotificationResponse)
 }
 
 interface TaskServiceInterface {
@@ -18,8 +18,9 @@ interface TaskServiceInterface {
 }
 
 interface UserManagementInterface {
+    OneWay:
+        registerUser(User),
     RequestResponse:
-        registerUser(UserRequest)(UserResponse),
         authUser(UserRequest)(UserResponse),
         checkUser(UserRequest)(UserResponse),
         deleteUser(UserRequest)(UserResponse)

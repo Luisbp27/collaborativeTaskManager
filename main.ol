@@ -23,39 +23,39 @@ outputPort NotificationManager {
 init {
     println@Console( "Welcome to the Collaborative Task Manager!" )();
     println@Console( "Do you have a user registered? (y: Yes, n: No): " )();
-    in(answer);
+    readLine@Console()(answer);
 
     if (answer == "y") {
         println@Console( "Enter username:" )();
-        in(username);
+        readLine@Console()(user.name);
 
         // Check if the user is registered in the system
-        checkUser@UserManager(username)(res);
+        checkUser@UserManager(user.name)(res);
 
         if (res.userRegistered == true) {
             println@Console( "Enter password:" )();
-            in(password)
+            readLine@Console()(user.password)
         } else {
             println@Console( "User not found. Registering a new user..." )();
             println@Console( "Enter username:" )();
-            in(username);
+            readLine@Console()(user.name);
             println@Console( "Enter password:" )();
-            in(password);
+            readLine@Console(user.password)();
 
             // User registration
-            registerUser@UserManager(username)(res);
+            registerUser@UserManager(user);
             println@Console( "User registered correctly!" )()
         }
 
     } else {
         println@Console( "Registering a new user..." )();
         println@Console( "Enter username:" )();
-        in(username);
+        readLine@Console(username)();
         println@Console( "Enter password:" )();
-        in(password);
+        readLine@Console(password)();
 
         // User registration
-        registerUser@UserManager(username)();
+        registerUser@UserManager(username);
         println@Console( "User registered correctly!" )()
     }
 
@@ -78,15 +78,15 @@ main {
         println@Console( "7. Show notifications historial of a user" )();
         println@Console( "8. Exit" )();
         println@Console( "####################################" )();
-        in(option);
+        readLine@Console(option)();
 
         if (option == "1") {
             println@Console( "Enter task name:" )();
-            in(req.taskName);
+            readLine@Console(req.taskName)();
             println@Console( "Enter task description:" )();
-            in(req.taskDescription);
+            readLine@Console(req.taskDescription)();
             println@Console( "Enter task user:" )();
-            in(req.taskUser);
+            readLine@Console(req.taskUser)();
 
             // Create a new task
             createTask@TaskManager(req)(res);
@@ -94,7 +94,7 @@ main {
 
         } else if (option == "2") {
             println@Console( "Enter task name:" )();
-            in(taskName);
+            readLine@Console(taskName)();
 
             // Delete a task
             deleteTask@TaskManager(taskName)(res);
@@ -108,7 +108,7 @@ main {
 
         } else if (option == "4") {
             println@Console( "Enter username:" )();
-            in(username);
+            readLine@Console(username)();
 
             // List all tasks assigned to a user
             listTasksByUser@TaskManager(username)(res);
@@ -117,9 +117,9 @@ main {
 
         } else if (option == "5") {
             println@Console( "Enter task name:" )();
-            in(req.taskName);
+            readLine@Console(req.taskName)();
             println@Console( "Enter new task user:" )();
-            in(req.taskUser);
+            readLine@Console(req.taskUser)();
 
             // Modify task user
             modifyTaskUser@TaskManager(req)(res);
@@ -127,9 +127,9 @@ main {
 
         } else if (option == "6") {
             println@Console( "Enter task name:" )();
-            in(req.taskName);
+            readLine@Console(req.taskName)();
             println@Console( "Enter new task status:" )();
-            in(req.taskStatus);
+            readLine@Console(req.taskStatus)();
 
             // Modify task status
             modifyTaskStatus@TaskManager(req)(res);
@@ -137,7 +137,7 @@ main {
 
         } else if (option == "7") {
             println@Console( "Enter username:" )();
-            in(username);
+            readLine@Console(username)();
 
             // Show notifications historial of a user
             notificationsHistorialByUser@NotificationManager(username)(res);
