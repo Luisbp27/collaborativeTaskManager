@@ -1,29 +1,8 @@
 include "console.iol"
 include "/protocols/http.iol"
-include "interfaces.iol"
+include "interfaces/interfaces.iol"
+include "interfaces/objects.iol"
 
-type UserRequest: void {
-    userId: int
-    username: string
-    password: string
-    email: string
-}
-
-type UserResponse: void {
-    userRegistered : bool
-    message: string
-}
-
-type User: void {
-    id: int
-    username: string
-    password: string
-    email: string
-}
-
-type Users: void {
-    users*: User
-}
 
 outputPort NotificationManager {
     location: "socket://localhost:1236"
@@ -41,25 +20,28 @@ service UserManagementService() {
         interfaces: UserManagementInterface
     }
 
+    init {
+        global.user_iter = 0
+    }
+
     main {
-        i = 0
-        registerUser(req)(res) {
+        [registerUser(req)(res) {
             // Adding user
-            users.username[i] = req.username
-            users.id[i] = req.userId
-            i = i + 1
+            users.username[global.user_iter] = req.username
+            users.id[global.user_iter] = req.userId
+            global.user_iter++
 
             // Send notification
-            req.userId = users.id[i]
+            req.userId = users.id[global.user_iter]
             req.message = "User registered successfully."
             sendNotification@NotificationManager(req)(res)
-        }
+        }]
 
-        authUser(req)(res) {
+        [authUser(req)(res) {
             // Check if the user is in the list
             found = false
             j = 0
-            while (found == false && j < i) {
+            while (found == false && j < global.user_iter) {
                 if (users.username[j] == req.username) {
                     found = true
                 }
@@ -74,9 +56,9 @@ service UserManagementService() {
                 res.userRegistered = true
                 res.message = "User " + req.username + " is registered."
             }
-        }
+        }]
 
-        deleteUser(req)(res) {
+        [deleteUser(req)(res) {
             j = req.userId
 
             // Delete user
@@ -84,13 +66,13 @@ service UserManagementService() {
             users.id[j] = 0
 
             // Get the last user and move it to the deleted user position
-            users.username[j] = users.username[i]
-            users.id[j] = users.id[i]
-            i = i - 1
+            users.username[j] = users.username[global.user_iter]
+            users.id[j] = users.id[global.user_iter]
+            global.user_iter--
 
             // Delete all the notifications of the deleted user
             deleteAllNotificationsByUser@NotificationManager(req)(res)
             println@Console(res.message)
-        }
+        }]
     }
 }

@@ -1,23 +1,7 @@
 include "console.iol"
 include "/protocols/http.iol"
-
-type NotificationRequest: void {
-    userId: string
-    message: string
-}
-
-type NotificationResponse: void {
-    status: string
-}
-
-type Notification: void {
-    userId: string
-    message: string
-}
-
-type Notifications: void {
-    notification*: Notification
-}
+include "interfaces/interfaces.iol"
+include "interfaces/objects.iol"
 
 service NotificationService() {
 
@@ -29,34 +13,37 @@ service NotificationService() {
         interfaces: NotificationInterface
     }
 
+    init {
+        global.not_iter = 0
+    }
+
     main {
-        i = 0
-        sendNotification(req)(res) {
-            notifications.userId[i] = req.userId
-            notifications.message[i] = req.message
-            i = i + 1
+        [sendNotification(req)(res) {
+            notifications.userId[global.not_iter] = req.userId
+            notifications.message[global.not_iter] = req.message
+            global.not_iter++
 
             // Send notification to user
             println@Console("Notification sent to user " + req.userId + ": " + req.message)()
             res.message = "Notification sent"
-        }
+        }]
 
-        notificationsHistorialByUser(req)(res) {
+        [notificationsHistorialByUser(req)(res) {
             println@Console("Showing notifications for user " + req.userId)()
             println@Console( " " )()
 
-            for (j = 0, j < i, j++) {
+            for (j = 0, j < global.not_iter, j++) {
                 if (notifications.userId[j] == req.userId) {
                     println@Console("Notification Nº" + j + ": " + notifications.message[j])()
                 }
             }
-        }
+        }]
 
-        deleteAllNotificationsByUser(req)(res) {
+        [deleteAllNotificationsByUser(req)(res) {
             println@Console("Deleting all notifications for user " + req.userId)()
             println@Console( " " )()
 
-            for (j = 0, j < i, j++) {
+            for (j = 0, j < global.not_iter, j++) {
                 if (notifications.userId[j] == req.userId) {
                     notifications.userId[j] = ""
                     notifications.message[j] = ""
@@ -64,6 +51,6 @@ service NotificationService() {
             }
 
             res.message = "Notifications deleted"
-        }
+        }]
     }
 }
