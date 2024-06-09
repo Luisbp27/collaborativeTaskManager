@@ -42,6 +42,8 @@ init {
             readLine@Console()(user.name);
             println@Console( "Enter password:" )();
             readLine@Console()(user.password);
+            println@Console( "Enter email:" )();
+            readLine@Console()(user.email);
 
             // User registration
             registerUser@UserManager(user);
@@ -54,6 +56,8 @@ init {
         readLine@Console()(user.name);
         println@Console( "Enter password:" )();
         readLine@Console()(user.password);
+        println@Console( "Enter email:" )();
+        readLine@Console()(user.email);
 
         // User registration
         registerUser@UserManager(user);

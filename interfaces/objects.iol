@@ -32,7 +32,7 @@ type Tasks: void {
 // User Management Service
 
 type UserRequest: void {
-    id: int
+    id?: int
     name: string
     password: string
     email: string
