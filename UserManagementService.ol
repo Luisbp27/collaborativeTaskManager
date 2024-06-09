@@ -27,16 +27,16 @@ service UserManagementService() {
     main {
         [registerUser(req) {
             synchronized( token ) {
-                // Adding user
-                println@Console("Registering user " + req.username + " with id " + req.userId)
-                users[global.user_iter].username = req.username
-                users[global.user_iter].id = req.userId
+                // Adding user to the list
+                users[global.user_iter].name = req.name
+                users[global.user_iter].id = req.id
                 global.user_iter++
 
+                println@Console("Registering user " + req.name + " with id " + req.id)
+
                 // Send notification
-                //req.userId = users.id[global.user_iter]
-                //res.message = "User registered successfully."
-                //sendNotification@NotificationManager(req)(res)
+                req.id = users.id[global.user_iter]
+                sendNotification@NotificationManager(req)
             }
         }]
 
@@ -46,7 +46,7 @@ service UserManagementService() {
                 found = false
                 j = 0
                 while (found == false && j < global.user_iter) {
-                    if (users[j].username == req.username) {
+                    if (users[j].name == req.name) {
                         found = true
                     }
                     j = j + 1
@@ -63,21 +63,21 @@ service UserManagementService() {
             }
         }]
 
-        [deleteUser(req)(res) {
+        [deleteUser(req) {
             synchronized( token ) {
-                j = req.userId
+                j = req.id
 
                 // Delete user
-                users[j].username = ""
+                users[j].name = ""
                 users[j].id = -1
 
                 // Get the last user and move it to the deleted user position
-                users[j].username = users[global.user_iter].username
+                users[j].name = users[global.user_iter].name
                 users[j].id = users[global.user_iter].id
                 global.user_iter--
 
                 // Delete all the notifications of the deleted user
-                // deleteAllNotificationsByUser@NotificationManager(req)(res)
+                deleteAllNotificationsByUser@NotificationManager(req)
             }
         }]
     }

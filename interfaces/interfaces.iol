@@ -1,28 +1,27 @@
 include "objects.iol"
 
 interface NotificationInterface {
-    RequestResponse:
-        sendNotification(NotificationRequest)(NotificationResponse),
-        notificationsHistorialByUser(NotificationRequest)(NotificationResponse),
-        deleteAllNotificationsByUser(NotificationRequest)(NotificationResponse)
+    OneWay:
+        sendNotification(NotificationRequest),
+        notificationsHistorialByUser(NotificationRequest),
+        deleteAllNotificationsByUser(NotificationRequest)
 }
 
 interface TaskServiceInterface {
     OneWay:
         createTask(Task),
-    RequestResponse:
-        modifyTaskUser(TaskRequest)(TaskResponse),
-        modifyTaskStatus(TaskRequest)(TaskResponse),
-        deleteTask(TaskRequest)(TaskResponse),
-        listAllTasks(TaskRequest)(TaskResponse),
-        listTasksByUser(TaskRequest)(TaskResponse)
+        modifyTaskUser(Task),
+        modifyTaskStatus(Task),
+        deleteTask(Task),
+        listAllTasks(Task),
+        listTasksByUser(Task)
 }
 
 interface UserManagementInterface {
     OneWay:
-        registerUser(User),
+        registerUser(UserRequest),
+        deleteUser(UserRequest)
     RequestResponse:
         authUser(UserRequest)(UserResponse),
-        checkUser(UserRequest)(UserResponse),
-        deleteUser(UserRequest)(UserResponse)
+        checkUser(UserRequest)(UserResponse)
 }

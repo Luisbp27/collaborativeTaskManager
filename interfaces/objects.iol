@@ -5,10 +5,6 @@ type NotificationRequest: void {
     message: string
 }
 
-type NotificationResponse: void {
-    status: string
-}
-
 type Notification: void {
     userId: string
     message: string
@@ -20,21 +16,8 @@ type Notifications: void {
 
 // Task Service
 
-type TaskRequest: void {
-    id : int
-    title: string
-    description: string
-    dueDate: string
-    assignedTo: string
-    status: string
-}
-
-type TaskResponse: void {
-    message: string
-}
-
 type Task: void {
-    id: int
+    id : int
     title: string
     description: string
     dueDate: string
@@ -49,8 +32,8 @@ type Tasks: void {
 // User Management Service
 
 type UserRequest: void {
-    userId: int
-    username: string
+    id: int
+    name: string
     password: string
     email: string
 }
@@ -59,13 +42,6 @@ type UserResponse: void {
     userRegistered : bool
 }
 
-type User: void {
-    id: int
-    username: string
-    password: string
-    email: string
-}
-
 type Users: void {
-    users*: User
+    users*: UserRequest
 }

@@ -41,7 +41,7 @@ init {
             println@Console( "Enter username:" )();
             readLine@Console()(user.name);
             println@Console( "Enter password:" )();
-            readLine@Console(user.password)();
+            readLine@Console()(user.password);
 
             // User registration
             registerUser@UserManager(user);
@@ -51,9 +51,9 @@ init {
     } else {
         println@Console( "Registering a new user..." )();
         println@Console( "Enter username:" )();
-        readLine@Console(user.name)();
+        readLine@Console()(user.name);
         println@Console( "Enter password:" )();
-        readLine@Console(user.password)();
+        readLine@Console()(user.password);
 
         // User registration
         registerUser@UserManager(user);
@@ -83,66 +83,58 @@ main {
 
         if (option == "1") {
             println@Console( "Enter task name:" )();
-            readLine@Console(req.taskName)();
+            readLine@Console()(req.taskName);
             println@Console( "Enter task description:" )();
-            readLine@Console(req.taskDescription)();
+            readLine@Console()(req.taskDescription);
             println@Console( "Enter task user:" )();
-            readLine@Console(req.taskUser)();
+            readLine@Console()(req.taskUser);
 
             // Create a new task
             createTask@TaskManager(req)
 
         } else if (option == "2") {
             println@Console( "Enter task name:" )();
-            readLine@Console(taskName)();
+            readLine@Console()(taskName);
 
             // Delete a task
-            deleteTask@TaskManager(taskName)(res);
+            deleteTask@TaskManager(taskName);
             println@Console( "Task deleted correctly!" )()
 
         } else if (option == "3") {
             // List all tasks
-            listAllTasks@TaskManager()(res);
-            println@Console( "Tasks:" )();
-            println@Console( res.tasks )()
+            listAllTasks@TaskManager()
 
         } else if (option == "4") {
             println@Console( "Enter username:" )();
-            readLine@Console(user.name)();
+            readLine@Console()(user.name);
 
             // List all tasks assigned to a user
-            listTasksByUser@TaskManager(user.name)(res);
-            println@Console( "Tasks:" )();
-            println@Console( res.tasks )()
+            listTasksByUser@TaskManager(user.name)
 
         } else if (option == "5") {
             println@Console( "Enter task name:" )();
-            readLine@Console(req.taskName)();
+            readLine@Console()(req.taskName);
             println@Console( "Enter new task user:" )();
-            readLine@Console(req.taskUser)();
+            readLine@Console()(req.taskUser);
 
             // Modify task user
-            modifyTaskUser@TaskManager(req)(res);
-            println@Console( "Task user modified correctly!" )()
+            modifyTaskUser@TaskManager(req)
 
         } else if (option == "6") {
             println@Console( "Enter task name:" )();
-            readLine@Console(req.taskName)();
+            readLine@Console()(req.taskName);
             println@Console( "Enter new task status:" )();
-            readLine@Console(req.taskStatus)();
+            readLine@Console()(req.taskStatus);
 
             // Modify task status
-            modifyTaskStatus@TaskManager(req)(res);
-            println@Console( "Task status modified correctly!" )()
+            modifyTaskStatus@TaskManager(req)
 
         } else if (option == "7") {
             println@Console( "Enter username:" )();
-            readLine@Console(user.name)();
+            readLine@Console()(user.name);
 
             // Show notifications historial of a user
-            notificationsHistorialByUser@NotificationManager(user.name)(res);
-            println@Console( "Notifications:" )();
-            println@Console( res.notifications )()
+            notificationsHistorialByUser@NotificationManager(user.name)
 
         } else if (option == "8") {
             println@Console( "Goodbye!" )()

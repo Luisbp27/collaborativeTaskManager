@@ -18,7 +18,7 @@ service NotificationService() {
     }
 
     main {
-        [sendNotification(req)(res) {
+        [sendNotification(req) {
             synchronized( token ) {
                 notifications.userId[global.not_iter] = req.userId
                 notifications.message[global.not_iter] = req.message
@@ -26,11 +26,10 @@ service NotificationService() {
 
                 // Send notification to user
                 println@Console("Notification sent to user " + req.userId + ": " + req.message)()
-                res.message = "Notification sent"
             }
         }]
 
-        [notificationsHistorialByUser(req)(res) {
+        [notificationsHistorialByUser(req) {
             synchronized( token ) {
                 println@Console("Showing notifications for user " + req.userId)()
                 println@Console( " " )()
@@ -43,7 +42,7 @@ service NotificationService() {
             }
         }]
 
-        [deleteAllNotificationsByUser(req)(res) {
+        [deleteAllNotificationsByUser(req) {
             synchronized( token ) {
                 println@Console("Deleting all notifications for user " + req.userId)()
                 println@Console( " " )()
@@ -54,8 +53,6 @@ service NotificationService() {
                         notifications.message[j] = ""
                     }
                 }
-
-                res.message = "Notifications deleted"
             }
         }]
     }

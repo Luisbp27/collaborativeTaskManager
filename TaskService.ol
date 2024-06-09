@@ -34,23 +34,21 @@ service TaskService() {
             }
         }]
 
-        [modifyTaskUser(req)(res) {
+        [modifyTaskUser(req) {
             // Modify task user
             task.assignedTo[req.id] = req.assignedTo
 
             println@Console("Task User Modified: " + req.title + ", New User: " + req.assignedTo)()
-            res.message = "Task user successfully modified."
         }]
 
-        [modifyTaskStatus(req)(res) {
+        [modifyTaskStatus(req) {
             // Modify task status
             task[req.id].status = req.status
 
             println@Console("Task Status Modified: " + req.title + ", New Status: " + req.status)()
-            res.message = "Task status successfully modified."
         }]
 
-        [deleteTask(req)(res) {
+        [deleteTask(req) {
             synchronized( token ) {
                 global.task_iter--
 
@@ -63,11 +61,10 @@ service TaskService() {
                 task.status[req.id] = task.status[global.task_iter]
 
                 println@Console("Task Deleted: " + req.title)()
-                res.message = "Task successfully deleted."
             }
         }]
 
-        [listAllTasks(req)(res) {
+        [listAllTasks(req) {
             synchronized( token ) {
                 // List all tasks
                 println@Console("Listing all tasks...")()
@@ -77,13 +74,11 @@ service TaskService() {
                         "Task ID: " + task.id[global.task_iter] + ", Title: " + task.title[global.task_iter] + ", Assigned to: " + task.assignedTo[global.task_iter] + ", Status: " + task.status[global.task_iter]
                     )()
                 }
-
-                res.message = "Tasks listed correctly."
             }
 
         }]
 
-        [listTasksByUser(req)(res) {
+        [listTasksByUser(req) {
             synchronized( token ) {
                 // List tasks by user
                 println@Console("Listing tasks by user: " + req.assignedTo)()
@@ -93,8 +88,6 @@ service TaskService() {
                         println@Console("Task ID: " + task.id[j] + ", Title: " + task.title[j] + ", Assigned to: " + task.assignedTo[j] + ", Status: " + task.status[j])()
                     }
                 }
-
-                res.message = "Tasks listed."
             }
         }]
     }
