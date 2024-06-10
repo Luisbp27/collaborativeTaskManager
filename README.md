@@ -69,17 +69,17 @@ application designed to facilitate efficient task creation, assignment, and trac
 
 ## Todo List
 
-- [x] Notification Service
+- [ ] Notification Service
   - [x] sendNotification()
-  - [x] notificationsHistorialByUser()
-- [x] Task Service
+  - [ ] notificationsHistorialByUser()
+- [ ] Task Service
   - [x] createTask()
-  - [x] assignTask()
-  - [x] updateTaskStatus()
-  - [x] deleteTask()
-  - [x] listAllTasks()
-  - [x] listTasksByUser()
-- [x] User Management Service
-  - [x] registerUser()
-  - [x] authUser()
-  - [x] deleteUser()
+  - [ ] assignTask()
+  - [ ] updateTaskStatus()
+  - [ ] deleteTask()
+  - [ ] listAllTasks()
+  - [ ] listTasksByUser()
+- [ ] User Management Service
+  - [ ] registerUser()
+  - [ ] authUser()
+  - [ ] deleteUser()
