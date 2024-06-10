@@ -24,9 +24,9 @@ type Task: void {
     id : int
     title: string
     description: string
-    dueDate: string
+    date: string
     assignedTo: string
-    status: string
+    status: string(enum(["pending", "completed", "in-progress", "canceled"]))
 }
 
 type Tasks: void {

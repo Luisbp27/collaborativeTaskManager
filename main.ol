@@ -86,12 +86,14 @@ main {
         readLine@Console()(option);
 
         if (option == "1") {
-            println@Console( "Enter task name:" )();
-            readLine@Console()(req.taskName);
+            println@Console( "Enter task title:" )();
+            readLine@Console()(req.title);
             println@Console( "Enter task description:" )();
-            readLine@Console()(req.taskDescription);
-            println@Console( "Enter task user:" )();
-            readLine@Console()(req.taskUser);
+            readLine@Console()(req.description);
+            println@Console( "Enter today date (format: DD/MM/YYYY):" )();
+            readLine@Console()(req.date);
+            println@Console( "Enter who the task is assigned to:" )();
+            readLine@Console()(req.assignedTo);
 
             // Create a new task
             createTask@TaskManager(req)

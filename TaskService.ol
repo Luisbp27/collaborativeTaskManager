@@ -14,7 +14,7 @@ service TaskService() {
     }
 
     init {
-        global.task_iter = 0
+        global.task_iter = 1
     }
 
     main {
@@ -24,12 +24,11 @@ service TaskService() {
                 task.id[global.task_iter] = global.task_iter
                 task.title[global.task_iter] = req.title
                 task.description[global.task_iter] = req.description
-                task.dueDate[global.task_iter] = req.dueDate
+                task.dueDate[global.task_iter] = req.date
                 task.assignedTo[global.task_iter] = req.assignedTo
-                task.status[global.task_iter] = req.status
+                task.status[global.task_iter] = "in-progress"
 
                 global.task_iter++
-
             }
         }
 
