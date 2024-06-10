@@ -15,13 +15,14 @@ service NotificationService() {
 
     init {
         global.not_iter = 0
+        global.notifications = Notifications
     }
 
     main {
         [sendNotification(req)] {
             synchronized( token ) {
-                notifications.userId[global.not_iter] = req.userId
-                notifications.message[global.not_iter] = req.message
+                global.notifications.userId[global.not_iter] = req.userId
+                global.notifications.message[global.not_iter] = req.message
                 global.not_iter++
             }
         }
@@ -32,8 +33,8 @@ service NotificationService() {
                 println@Console( " " )()
 
                 for (j = 0, j < global.not_iter, j++) {
-                    if (notifications.userId[j] == req.userId) {
-                        println@Console("Notification Nº" + j + ": " + notifications.message[j])()
+                    if (global.notifications.userId[j] == req.userId) {
+                        println@Console("Notification Nº" + j + ": " + global.notifications.message[j])()
                     }
                 }
             }
@@ -42,9 +43,9 @@ service NotificationService() {
         [deleteAllNotificationsByUser(req)] {
             synchronized( token ) {
                 for (j = 0, j < global.not_iter, j++) {
-                    if (notifications.userId[j] == req.userId) {
-                        notifications.userId[j] = ""
-                        notifications.message[j] = ""
+                    if (global.notifications.userId[j] == req.userId) {
+                        global.notifications.userId[j] = ""
+                        global.notifications.message[j] = ""
                     }
                 }
             }
