@@ -4,15 +4,15 @@ include "interfaces/interfaces.iol"
 include "interfaces/objects.iol"
 
 
-outputPort NotificationManager {
-    location: "socket://localhost:1236"
-    protocol: http
-    interfaces: NotificationInterface
-}
-
 service UserManagementService() {
 
     execution: concurrent
+
+    outputPort NotificationManager {
+        location: "socket://localhost:1236"
+        protocol: http
+        interfaces: NotificationInterface
+    }
 
     inputPort UserManagementPort {
         location: "socket://localhost:1235"
@@ -25,20 +25,20 @@ service UserManagementService() {
     }
 
     main {
-        [registerUser(req) {
+        [registerUser(req)] {
             synchronized( token ) {
                 // Adding user to the list
                 users[global.user_iter].name = req.name
                 users[global.user_iter].id = req.id
                 global.user_iter++
 
-                println@Console("Registering user " + req.name + " with id " + req.id)
+                println@Console("Registering user " + req.name + " with id " + req.id)()
 
                 // Send notification
                 req.id = users.id[global.user_iter]
                 sendNotification@NotificationManager(req)
             }
-        }]
+        }
 
         [authUser(req)(res) {
             synchronized( token ) {
@@ -55,15 +55,15 @@ service UserManagementService() {
                 // Send response
                 if (found == false) {
                     res.userRegistered = false
-                    println@Console("User " + req.username + " is not registered.")
+                    println@Console("User " + req.username + " is not registered.")()
                 } else {
                     res.userRegistered = true
-                    println@Console("User " + req.username + " is registered.")
+                    println@Console("User " + req.username + " is registered.")()
                 }
             }
         }]
 
-        [deleteUser(req) {
+        [deleteUser(req)] {
             synchronized( token ) {
                 j = req.id
 
@@ -79,6 +79,6 @@ service UserManagementService() {
                 // Delete all the notifications of the deleted user
                 deleteAllNotificationsByUser@NotificationManager(req)
             }
-        }]
+        }
     }
 }

@@ -18,7 +18,7 @@ service TaskService() {
     }
 
     main {
-        [createTask(req) {
+        [createTask(req)] {
             synchronized( token ) {
                 // Store task in a list of tasks
                 task.id[global.task_iter] = global.task_iter
@@ -32,23 +32,23 @@ service TaskService() {
 
                 println@Console("Task Created: " + req.title + ", Assigned to: " + req.assignedTo)()
             }
-        }]
+        }
 
-        [modifyTaskUser(req) {
+        [modifyTaskUser(req)] {
             // Modify task user
             task.assignedTo[req.id] = req.assignedTo
 
             println@Console("Task User Modified: " + req.title + ", New User: " + req.assignedTo)()
-        }]
+        }
 
-        [modifyTaskStatus(req) {
+        [modifyTaskStatus(req)] {
             // Modify task status
             task[req.id].status = req.status
 
             println@Console("Task Status Modified: " + req.title + ", New Status: " + req.status)()
-        }]
+        }
 
-        [deleteTask(req) {
+        [deleteTask(req)] {
             synchronized( token ) {
                 global.task_iter--
 
@@ -62,9 +62,9 @@ service TaskService() {
 
                 println@Console("Task Deleted: " + req.title)()
             }
-        }]
+        }
 
-        [listAllTasks(req) {
+        [listAllTasks(req)] {
             synchronized( token ) {
                 // List all tasks
                 println@Console("Listing all tasks...")()
@@ -76,9 +76,9 @@ service TaskService() {
                 }
             }
 
-        }]
+        }
 
-        [listTasksByUser(req) {
+        [listTasksByUser(req)] {
             synchronized( token ) {
                 // List tasks by user
                 println@Console("Listing tasks by user: " + req.assignedTo)()
@@ -89,6 +89,6 @@ service TaskService() {
                     }
                 }
             }
-        }]
+        }
     }
 }

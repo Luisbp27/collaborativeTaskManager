@@ -83,7 +83,7 @@ main {
         println@Console( "7. Show notifications historial of a user" )();
         println@Console( "8. Exit" )();
         println@Console( "####################################" )();
-        readLine@Console(option)();
+        readLine@Console()(option);
 
         if (option == "1") {
             println@Console( "Enter task name:" )();
