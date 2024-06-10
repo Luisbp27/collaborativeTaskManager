@@ -72,7 +72,7 @@ main {
     option = "0";
     while (option != "8") {
         // Menu
-        println@Console( "####################################" )();
+        println@Console( "\n####################################" )();
         println@Console( "Select an option:" )();
         println@Console( "1. Create a new task" )();
         println@Console( "2. Delete a task" )();
@@ -82,7 +82,7 @@ main {
         println@Console( "6. Modify task status" )();
         println@Console( "7. Show notifications historial of a user" )();
         println@Console( "8. Exit" )();
-        println@Console( "####################################" )();
+        println@Console( "####################################\n" )();
         readLine@Console()(option);
 
         if (option == "1") {
@@ -95,6 +95,7 @@ main {
 
             // Create a new task
             createTask@TaskManager(req)
+            println@Console( "Task created correctly!" )()
 
         } else if (option == "2") {
             println@Console( "Enter task name:" )();
@@ -106,14 +107,14 @@ main {
 
         } else if (option == "3") {
             // List all tasks
-            listAllTasks@TaskManager()
+            listAllTasks@TaskManager()()
 
         } else if (option == "4") {
             println@Console( "Enter username:" )();
             readLine@Console()(user.name);
 
             // List all tasks assigned to a user
-            listTasksByUser@TaskManager(user.name)
+            listTasksByUser@TaskManager(user.name)()
 
         } else if (option == "5") {
             println@Console( "Enter task name:" )();
@@ -122,7 +123,8 @@ main {
             readLine@Console()(req.taskUser);
 
             // Modify task user
-            modifyTaskUser@TaskManager(req)
+            modifyTaskUser@TaskManager(req);
+            println@Console( "Task user modified correctly!" )()
 
         } else if (option == "6") {
             println@Console( "Enter task name:" )();
@@ -131,14 +133,15 @@ main {
             readLine@Console()(req.taskStatus);
 
             // Modify task status
-            modifyTaskStatus@TaskManager(req)
+            modifyTaskStatus@TaskManager(req);
+            println@Console( "Task status modified correctly!" )()
 
         } else if (option == "7") {
             println@Console( "Enter username:" )();
             readLine@Console()(user.name);
 
             // Show notifications historial of a user
-            notificationsHistorialByUser@NotificationManager(user.name)
+            notificationsHistorialByUser@NotificationManager(user.name)()
 
         } else if (option == "8") {
             println@Console( "Goodbye!" )()

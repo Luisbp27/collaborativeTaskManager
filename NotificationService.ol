@@ -23,13 +23,10 @@ service NotificationService() {
                 notifications.userId[global.not_iter] = req.userId
                 notifications.message[global.not_iter] = req.message
                 global.not_iter++
-
-                // Send notification to user
-                println@Console("Notification sent to user " + req.userId + ": " + req.message)()
             }
         }
 
-        [notificationsHistorialByUser(req)] {
+        [notificationsHistorialByUser(req)(res)] {
             synchronized( token ) {
                 println@Console("Showing notifications for user " + req.userId)()
                 println@Console( " " )()
@@ -44,9 +41,6 @@ service NotificationService() {
 
         [deleteAllNotificationsByUser(req)] {
             synchronized( token ) {
-                println@Console("Deleting all notifications for user " + req.userId)()
-                println@Console( " " )()
-
                 for (j = 0, j < global.not_iter, j++) {
                     if (notifications.userId[j] == req.userId) {
                         notifications.userId[j] = ""

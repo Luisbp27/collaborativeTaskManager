@@ -32,15 +32,13 @@ service UserManagementService() {
                 users[global.user_iter].id = req.id
                 global.user_iter++
 
-                println@Console("Registering user " + req.name + " with id " + req.id)()
-
                 // Send notification
                 req.id = users.id[global.user_iter]
                 sendNotification@NotificationManager(req)
             }
         }
 
-        [authUser(req)(res) {
+        [authUser(req)(res)] {
             synchronized( token ) {
                 // Check if the user is in the list
                 found = false
@@ -55,13 +53,11 @@ service UserManagementService() {
                 // Send response
                 if (found == false) {
                     res.userRegistered = false
-                    println@Console("User " + req.username + " is not registered.")()
                 } else {
                     res.userRegistered = true
-                    println@Console("User " + req.username + " is registered.")()
                 }
             }
-        }]
+        }
 
         [deleteUser(req)] {
             synchronized( token ) {
