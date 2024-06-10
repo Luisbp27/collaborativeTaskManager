@@ -15,13 +15,13 @@ type Notification: void {
 }
 
 type Notifications: void {
-    notification*: Notification
+    notifications[0, *]: Notification
 }
 
 // Task Service
 
 type Task: void {
-    userId : int
+    userId: int
     title: string
     description: string
     date: string
@@ -30,7 +30,7 @@ type Task: void {
 }
 
 type Tasks: void {
-    task*: Task
+    tasks[0, *]: Task
 }
 
 // User Management Service
@@ -47,5 +47,5 @@ type UserResponse: void {
 }
 
 type Users: void {
-    users*: UserRequest
+    users[0, *]: UserRequest
 }

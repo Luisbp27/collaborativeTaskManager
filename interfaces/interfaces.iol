@@ -13,10 +13,9 @@ interface TaskServiceInterface {
         createTask(Task),
         modifyTaskUser(Task),
         modifyTaskStatus(Task),
-        deleteTask(Task)
-    RequestResponse:
-        listAllTasks(Task)(Task),
-        listTasksByUser(Task)(Task)
+        deleteTask(Task),
+        listAllTasks(Task),
+        listTasksByUser(Task)
 }
 
 interface UserManagementInterface {

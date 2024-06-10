@@ -52,7 +52,7 @@ init {
             println@Console( "User registered correctly!" )()
         }
 
-    } else {
+    } else if (answer == "n") {
         println@Console( "Registering a new user..." )();
         println@Console( "Enter username:" )();
         readLine@Console()(user.name);
@@ -65,6 +65,9 @@ init {
         registerUser@UserManager(user)(res);
         global.userId = res.id;
         println@Console( "User registered correctly!" )()
+
+    } else {
+        println@Console( "Invalid option" )()
     }
 
     println@Console( "Welcome " + user.name + "!" )()
@@ -89,7 +92,9 @@ main {
         readLine@Console()(option);
 
         if (option == "1") {
-            req.userId = global.userId;
+            println@Console( "Enter a ID:" )();
+            readLine@Console()(req.userId);
+            req.userId = int(req.userId);
             println@Console( "Enter task title:" )();
             readLine@Console()(req.title);
             println@Console( "Enter task description:" )();
@@ -113,14 +118,14 @@ main {
 
         } else if (option == "3") {
             // List all tasks
-            listAllTasks@TaskManager()()
+            listAllTasks@TaskManager()
 
         } else if (option == "4") {
             println@Console( "Enter username:" )();
             readLine@Console()(user.name);
 
             // List all tasks assigned to a user
-            listTasksByUser@TaskManager(user.name)()
+            listTasksByUser@TaskManager(user.name)
 
         } else if (option == "5") {
             println@Console( "Enter task name:" )();
