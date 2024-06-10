@@ -21,12 +21,12 @@ type Notifications: void {
 // Task Service
 
 type Task: void {
-    id : int
+    id? : int
     title: string
     description: string
     date: string
     assignedTo: string
-    status: string(enum(["pending", "completed", "in-progress", "canceled"]))
+    status?: string(enum(["pending", "completed", "in-progress", "canceled"]))
 }
 
 type Tasks: void {

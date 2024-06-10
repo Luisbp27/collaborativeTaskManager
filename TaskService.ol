@@ -53,7 +53,6 @@ service TaskService() {
                 task.dueDate[req.id] = task.dueDate[global.task_iter]
                 task.assignedTo[req.id] = task.assignedTo[global.task_iter]
                 task.status[req.id] = task.status[global.task_iter]
-
             }
         }
 
