@@ -14,14 +14,14 @@ service TaskService() {
     }
 
     init {
-        global.task_iter = 1
+        global.task_iter = 0
     }
 
     main {
         [createTask(req)] {
             synchronized( token ) {
                 // Store task in a list of tasks
-                task.id[global.task_iter] = global.task_iter
+                task.userId[global.task_iter] = int(req.userId)
                 task.title[global.task_iter] = req.title
                 task.description[global.task_iter] = req.description
                 task.dueDate[global.task_iter] = req.date
@@ -59,11 +59,16 @@ service TaskService() {
         [listAllTasks(req)(res)] {
             synchronized( token ) {
                 // List all tasks
-                println@Console("Listing all tasks...")()
+                println@Console( "Listing all tasks...\n" )()
 
                 for (j = 0, j < global.task_iter, j++) {
                     println@Console(
-                        "Task ID: " + task.id[global.task_iter] + ", Title: " + task.title[global.task_iter] + ", Assigned to: " + task.assignedTo[global.task_iter] + ", Status: " + task.status[global.task_iter]
+                        "User ID: " + task.userId[global.task_iter] +
+                        "\nTitle: " + task.title[global.task_iter] +
+                        "\nDescription: " + task.description[global.task_iter] +
+                        "\nDate: " + task.date[global.task_iter] +
+                        "\nAssigned to: " + task.assignedTo[global.task_iter] +
+                        "\nStatus: " + task.status[global.task_iter]
                     )()
                 }
             }

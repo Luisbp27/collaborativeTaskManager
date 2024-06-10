@@ -25,17 +25,18 @@ service UserManagementService() {
     }
 
     main {
-        [registerUser(req)] {
+        [registerUser(req)(res)] {
             synchronized( token ) {
                 // Adding user to the list
-                users.name[global.user_iter] = req.name
                 users.id[global.user_iter] = global.user_iter
+                users.name[global.user_iter] = req.name
+                res.id = global.user_iter
                 global.user_iter++
 
                 // Send notification
-                req.id = users.id[global.user_iter]
-                req.message = "User " + req.name + " registered"
-                sendNotification@NotificationManager(req)
+                notReq.userId = int(users.id[global.user_iter])
+                notReq.message = "User " + users.name[global.user_iter] + " registered"
+                sendNotification@NotificationManager(notReq)
             }
         }
 

@@ -25,6 +25,7 @@ init {
     println@Console( "Welcome to the Collaborative Task Manager!" )();
     println@Console( "Do you have a user registered? (y: Yes, n: No): " )();
     readLine@Console()(answer);
+    global.userId = 0;
 
     if (answer == "y") {
         println@Console( "Enter username:" )();
@@ -46,7 +47,8 @@ init {
             readLine@Console()(user.email);
 
             // User registration
-            registerUser@UserManager(user);
+            registerUser@UserManager(user)(res);
+            global.userId = res.id;
             println@Console( "User registered correctly!" )()
         }
 
@@ -60,7 +62,8 @@ init {
         readLine@Console()(user.email);
 
         // User registration
-        registerUser@UserManager(user);
+        registerUser@UserManager(user)(res);
+        global.userId = res.id;
         println@Console( "User registered correctly!" )()
     }
 
@@ -86,6 +89,7 @@ main {
         readLine@Console()(option);
 
         if (option == "1") {
+            req.userId = global.userId;
             println@Console( "Enter task title:" )();
             readLine@Console()(req.title);
             println@Console( "Enter task description:" )();

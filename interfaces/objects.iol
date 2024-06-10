@@ -1,7 +1,7 @@
 // Notification Service
 
 type NotificationRequest: void {
-    userId: string
+    userId: int
     message: string
 }
 
@@ -10,7 +10,7 @@ type NotificationResponse: void {
 }
 
 type Notification: void {
-    userId: string
+    userId: int
     message: string
 }
 
@@ -21,7 +21,7 @@ type Notifications: void {
 // Task Service
 
 type Task: void {
-    id? : int
+    userId : int
     title: string
     description: string
     date: string
@@ -43,7 +43,7 @@ type UserRequest: void {
 }
 
 type UserResponse: void {
-    userRegistered : bool
+    id?: int
 }
 
 type Users: void {
