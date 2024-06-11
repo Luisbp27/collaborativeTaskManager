@@ -34,7 +34,7 @@ service NotificationService() {
                 println@Console("Showing notifications for user " + req.name + "\n")()
 
                 for (j = 0, j < global.not_iter, j++) {
-                    if (global.notifications.id[j] == req.id) {
+                    if (global.notifications.userId[j] == req.id) {
                         println@Console("Notification Nº" + j + ": " + global.notifications.message[j])()
                     }
                 }
@@ -44,8 +44,8 @@ service NotificationService() {
         [deleteAllNotificationsByUser(req)] {
             synchronized( token ) {
                 for (j = 0, j < global.not_iter, j++) {
-                    if (global.notifications.id[j] == req.id) {
-                        global.notifications.id[j] = ""
+                    if (global.notifications.userId[j] == req.id) {
+                        global.notifications.userId[j] = ""
                         global.notifications.message[j] = ""
                     }
                 }
