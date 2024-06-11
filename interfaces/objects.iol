@@ -21,6 +21,7 @@ type Notifications: void {
 // Task Service
 
 type Task: void {
+    id?: int
     userId: int
     title: string
     description: string

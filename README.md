@@ -78,7 +78,7 @@ application designed to facilitate efficient task creation, assignment, and trac
   - [ ] updateTaskStatus()
   - [x] deleteTask()
   - [x] listAllTasks()
-  - [ ] listTasksByUser()
+  - [x] listTasksByUser()
 - [ ] User Management Service
   - [x] registerUser()
   - [ ] authUser()

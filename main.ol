@@ -109,24 +109,23 @@ main {
             println@Console( "Task created correctly!" )()
 
         } else if (option == "2") {
-            println@Console( "Enter task ID:" )();
-            readLine@Console()(req.userId);
-            req.userId = int(req.userId);
+            println@Console( "Enter Task title:" )();
+            readLine@Console()(req.title);
 
             // Delete a task
-            deleteTask@TaskManager(req);
-            println@Console( "Task deleted correctly!" )()
+            deleteTask@TaskManager(req)
 
         } else if (option == "3") {
             // List all tasks
             listAllTasks@TaskManager()
 
         } else if (option == "4") {
-            println@Console( "Enter username:" )();
-            readLine@Console()(user.name);
+            println@Console( "Enter User ID:" )();
+            readLine@Console()(req.userId);
+            req.userId = int(req.userId);
 
             // List all tasks assigned to a user
-            listTasksByUser@TaskManager(user.name)
+            listTasksByUser@TaskManager(req)
 
         } else if (option == "5") {
             println@Console( "Enter task name:" )();
