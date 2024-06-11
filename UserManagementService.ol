@@ -32,11 +32,11 @@ service UserManagementService() {
                 global.users.id[global.user_iter] = global.user_iter
                 global.users.name[global.user_iter] = req.name
 
-                res.id = global.users.id[global.user_iter]
+                res.id = int(global.users.id[global.user_iter])
                 global.user_iter++
 
                 // Send notification
-                notReq.userId = global.users.id[global.user_iter]
+                notReq.userId = int(global.users.id[global.user_iter])
                 notReq.message = "User " + global.users.name[global.user_iter] + " registered"
                 sendNotification@NotificationManager(notReq)
             }

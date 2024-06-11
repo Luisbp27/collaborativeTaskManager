@@ -109,11 +109,12 @@ main {
             println@Console( "Task created correctly!" )()
 
         } else if (option == "2") {
-            println@Console( "Enter task name:" )();
-            readLine@Console()(taskName);
+            println@Console( "Enter task ID:" )();
+            readLine@Console()(req.userId);
+            req.userId = int(req.userId);
 
             // Delete a task
-            deleteTask@TaskManager(taskName);
+            deleteTask@TaskManager(req);
             println@Console( "Task deleted correctly!" )()
 
         } else if (option == "3") {

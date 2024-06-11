@@ -37,25 +37,25 @@ service TaskService() {
 
         [modifyTaskUser(req)] {
             // Modify task user
-            global.tasks.assignedTo[req.id] = req.assignedTo
+            global.tasks.assignedTo[req.userId] = req.assignedTo
         }
 
         [modifyTaskStatus(req)] {
             // Modify task status
-            global.tasks.status[req.id] = req.status
+            global.tasks.status[req.userId] = req.status
         }
 
         [deleteTask(req)] {
             synchronized( token ) {
-                global.task_iter--
-
                 // Shift the last task to the deleted task position
-                global.tasks.id[req.id] = global.tasks.id[global.task_iter]
-                global.tasks.title[req.id] = global.tasks.title[global.task_iter]
-                global.tasks.description[req.id] = global.tasks.description[global.task_iter]
-                global.tasks.dueDate[req.id] = global.tasks.dueDate[global.task_iter]
-                global.tasks.assignedTo[req.id] = global.tasks.assignedTo[global.task_iter]
-                global.tasks.status[req.id] = global.tasks.status[global.task_iter]
+                global.tasks.userId[req.userId] = global.tasks.userId[global.task_iter]
+                global.tasks.title[req.userId] = global.tasks.title[global.task_iter]
+                global.tasks.description[req.userId] = global.tasks.description[global.task_iter]
+                global.tasks.dueDate[req.userId] = global.tasks.dueDate[global.task_iter]
+                global.tasks.assignedTo[req.userId] = global.tasks.assignedTo[global.task_iter]
+                global.tasks.status[req.userId] = global.tasks.status[global.task_iter]
+
+                global.task_iter--
             }
         }
 
@@ -71,7 +71,7 @@ service TaskService() {
                         "\nDescription: " + global.tasks.description[global.task_iter] +
                         "\nDate: " + global.tasks.date[global.task_iter] +
                         "\nAssigned to: " + global.tasks.assignedTo[global.task_iter] +
-                        "\nStatus: " + global.tasks.status[global.task_iter]
+                        "\nStatus: " + global.tasks.status[global.task_iter] + "\n"
                     )()
                 }
             }
@@ -89,7 +89,8 @@ service TaskService() {
                             "\nDescription: " + global.tasks.description[j] +
                             "\nDate: " + global.tasks.date[j] +
                             "\nAssigned to: " + global.tasks.assignedTo[j] +
-                            "\nStatus: " + global.tasks.status[j])()
+                            "\nStatus: " + global.tasks.status[j] + "\n"
+                        )()
                     }
                 }
             }
