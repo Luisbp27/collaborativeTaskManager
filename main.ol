@@ -25,7 +25,6 @@ init {
     println@Console( "Welcome to the Collaborative Task Manager!" )();
     println@Console( "Do you have a user registered? (y: Yes, n: No): " )();
     readLine@Console()(answer);
-    global.userId = 0;
 
     if (answer == "y") {
         println@Console( "Enter username:" )();
@@ -48,8 +47,7 @@ init {
 
             // User registration
             registerUser@UserManager(user)(res);
-            global.userId = res.id;
-            println@Console( "User registered correctly!" )()
+            println@Console( "User registered correctly, your ID is: " + res.id )()
         }
 
     } else if (answer == "n") {
@@ -63,8 +61,7 @@ init {
 
         // User registration
         registerUser@UserManager(user)(res);
-        global.userId = res.id;
-        println@Console( "User registered correctly!" )()
+        println@Console( "User registered correctly, your ID is: " + res.id )()
 
     } else {
         println@Console( "Invalid option" )()
@@ -92,7 +89,7 @@ main {
         readLine@Console()(option);
 
         if (option == "1") {
-            println@Console( "Enter a ID:" )();
+            println@Console( "Enter your ID:" )();
             readLine@Console()(req.userId);
             req.userId = int(req.userId);
             println@Console( "Enter task title:" )();
@@ -128,31 +125,34 @@ main {
             listTasksByUser@TaskManager(req)
 
         } else if (option == "5") {
-            println@Console( "Enter task name:" )();
-            readLine@Console()(req.taskName);
+            println@Console( "Enter task title:" )();
+            readLine@Console()(req.title);
             println@Console( "Enter new task user:" )();
-            readLine@Console()(req.taskUser);
+            readLine@Console()(req.assignedTo);
 
             // Modify task user
             modifyTaskUser@TaskManager(req);
             println@Console( "Task user modified correctly!" )()
 
         } else if (option == "6") {
-            println@Console( "Enter task name:" )();
-            readLine@Console()(req.taskName);
-            println@Console( "Enter new task status:" )();
-            readLine@Console()(req.taskStatus);
+            println@Console( "Enter task title:" )();
+            readLine@Console()(req.title);
+            println@Console( "Enter new task status [pending, completed, in-progress, canceled]:" )();
+            readLine@Console()(req.status);
 
             // Modify task status
             modifyTaskStatus@TaskManager(req);
             println@Console( "Task status modified correctly!" )()
 
         } else if (option == "7") {
+            println@Console( "Enter User ID:" )();
+            readLine@Console()(req.id);
+            req.userId = int(req.id);
             println@Console( "Enter username:" )();
-            readLine@Console()(user.name);
+            readLine@Console()(req.name);
 
             // Show notifications historial of a user
-            notificationsHistorialByUser@NotificationManager(user.name)()
+            notificationsHistorialByUser@NotificationManager(req)
 
         } else if (option == "8") {
             println@Console( "Goodbye!" )()
