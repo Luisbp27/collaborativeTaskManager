@@ -3,9 +3,8 @@ include "objects.iol"
 interface NotificationInterface {
     OneWay:
         sendNotification(NotificationRequest),
-        deleteAllNotificationsByUser(NotificationRequest)
-    RequestResponse:
-        notificationsHistorialByUser(NotificationRequest)(NotificationResponse)
+        deleteAllNotificationsByUser(NotificationRequest),
+        notificationsHistorialByUser(NotificationRequest)
 }
 
 interface TaskServiceInterface {

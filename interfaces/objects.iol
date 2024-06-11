@@ -5,10 +5,6 @@ type NotificationRequest: void {
     message: string
 }
 
-type NotificationResponse: void {
-    notificationSent: bool
-}
-
 type Notification: void {
     userId: int
     message: string
