@@ -72,10 +72,11 @@ application designed to facilitate efficient task creation, assignment, and trac
 - [ ] Notification Service
   - [x] sendNotification()
   - [ ] notificationsHistorialByUser()
+  - [ ] deleteAllNotificationsByUser()
 - [ ] Task Service
   - [x] createTask()
-  - [ ] assignTask()
-  - [ ] updateTaskStatus()
+  - [x] modifyTaskUser()
+  - [x] modifyTaskStatus()
   - [x] deleteTask()
   - [x] listAllTasks()
   - [x] listTasksByUser()
