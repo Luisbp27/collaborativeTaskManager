@@ -1,8 +1,13 @@
 // Notification Service
 
-type NotificationRequest: void {
+type NotificationRequest1: void {
     userId: int
     message: string
+}
+
+type NotificationRequest2: void {
+    userId: int
+    name: string
 }
 
 type Notification: void {
