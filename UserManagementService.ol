@@ -31,14 +31,17 @@ service UserManagementService() {
                 // Adding user to the list
                 global.users.id[global.user_iter] = global.user_iter
                 global.users.name[global.user_iter] = req.name
-
-                res.id = int(global.users.id[global.user_iter])
-                global.user_iter++
+                global.users.password[global.user_iter] = req.password
+                global.users.email[global.user_iter] = req.email
 
                 // Send notification
-                notReq.userId = int(global.users.id[global.user_iter])
-                notReq.message = "User " + global.users.name[global.user_iter] + " registered"
+                notReq.userId = global.users.id[global.user_iter]
+                notReq.message = "User " + global.users.name[global.user_iter] + " with id: " + global.users.id[global.user_iter] + " registered"
                 sendNotification@NotificationManager(notReq)
+
+                // Send response and increment user_iter
+                res.id = global.users.id[global.user_iter]
+                global.user_iter++
             }
         }
 
@@ -74,10 +77,15 @@ service UserManagementService() {
                 // Get the last user and move it to the deleted user position
                 users[j].name = users[global.user_iter].name
                 users[j].id = users[global.user_iter].id
-                global.user_iter--
+
+                // Send notification
+                notReq.userId = j
+                notReq.message = "User " + users[j].name + " deleted"
 
                 // Delete all the notifications of the deleted user
-                deleteAllNotificationsByUser@NotificationManager(req)
+                deleteAllNotificationsByUser@NotificationManager(notReq)
+
+                global.user_iter--
             }
         }
     }
