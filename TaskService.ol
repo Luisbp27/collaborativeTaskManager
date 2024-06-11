@@ -37,13 +37,37 @@ service TaskService() {
         }
 
         [modifyTaskUser(req)] {
-            // Modify task user
-            global.tasks.assignedTo[req.userId] = req.assignedTo
+            // Search ID task by title
+            found = false
+            for (j = 0, j < global.task_iter, j++) {
+                if (global.tasks.title[j] == req.title) {
+                    // Modify task user
+                    global.tasks.assignedTo[j] = req.assignedTo
+                    found = true
+                    println@Console( "Task user modified successfully!" )()
+                }
+            }
+
+            if (!found) {
+                println@Console( "Task not found!" )()
+            }
         }
 
         [modifyTaskStatus(req)] {
-            // Modify task status
-            global.tasks.status[req.userId] = req.status
+            // Search ID task by title
+            found = false
+            for (j = 0, j < global.task_iter, j++) {
+                if (global.tasks.title[j] == req.title) {
+                    // Modify task status
+                    global.tasks.status[j] = req.status
+                    found = true
+                    println@Console( "Task status modified successfully!" )()
+                }
+            }
+
+            if (!found) {
+                println@Console( "Task not found!" )()
+            }
         }
 
         [deleteTask(req)] {
