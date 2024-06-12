@@ -146,8 +146,8 @@ main {
 
         } else if (option == "7") {
             println@Console( "Enter User ID:" )();
-            readLine@Console()(req.id);
-            req.userId = int(req.id);
+            readLine@Console()(req.userId);
+            req.userId = int(req.userId);
             println@Console( "Enter username:" )();
             readLine@Console()(req.name);
 
