@@ -51,18 +51,14 @@ service UserManagementService() {
                 found = false
                 j = 0
                 while (found == false && j < global.user_iter) {
-                    if (users[j].name == req.name) {
+                    if (global.users.id[j] == req.id && global.users.password[j] == req.password) {
                         found = true
                     }
-                    j = j + 1
+                    j++
                 }
 
                 // Send response
-                if (found == false) {
-                    res.userRegistered = false
-                } else {
-                    res.userRegistered = true
-                }
+                res.userRegistered = found
             }
         }
 

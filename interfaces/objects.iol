@@ -37,17 +37,33 @@ type Tasks: void {
 
 // User Management Service
 
-type UserRequest: void {
+type UserRequest1: void {
     id?: int
     name: string
     password: string
     email: string
 }
 
-type UserResponse: void {
+type UserRequest2: void {
+    id: int
+    password: string
+}
+
+type UserResponse1: void {
     id?: int
 }
 
+type UserResponse2: void {
+    userRegistered?: bool
+}
+
+type User: void {
+    id?: int
+    name: string
+    password: string
+    email: string
+}
+
 type Users: void {
-    users[0, *]: UserRequest
+    users[0, *]: User
 }

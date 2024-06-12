@@ -19,9 +19,8 @@ interface TaskServiceInterface {
 
 interface UserManagementInterface {
     OneWay:
-        deleteUser(UserRequest)
+        deleteUser(UserRequest1)
     RequestResponse:
-        registerUser(UserRequest)(UserResponse),
-        authUser(UserRequest)(UserResponse),
-        checkUser(UserRequest)(UserResponse)
+        registerUser(UserRequest1)(UserResponse1),
+        authUser(UserRequest2)(UserResponse2)
 }

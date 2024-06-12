@@ -27,16 +27,16 @@ init {
     readLine@Console()(answer);
 
     if (answer == "y") {
-        println@Console( "Enter username:" )();
-        readLine@Console()(user.name);
+        println@Console( "Enter your ID:" )();
+        readLine@Console()(req.id);
+        req.id = int(req.id);
+        println@Console( "Enter password:" )();
+        readLine@Console()(req.password);
 
         // Check if the user is registered in the system
-        checkUser@UserManager(user.name)(res);
+        authUser@UserManager(req)(res);
 
-        if (res.userRegistered == true) {
-            println@Console( "Enter password:" )();
-            readLine@Console()(user.password)
-        } else {
+        if (res.userRegistered == false) {
             println@Console( "User not found. Registering a new user..." )();
             println@Console( "Enter username:" )();
             readLine@Console()(user.name);
