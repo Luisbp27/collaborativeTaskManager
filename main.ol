@@ -36,6 +36,8 @@ init {
         // Check if the user is registered in the system
         authUser@UserManager(req)(res);
 
+        println@Console( "Found value: " +res.userRegistered )();
+
         if (res.userRegistered == false) {
             println@Console( "User not found. Registering a new user..." )();
             println@Console( "Enter username:" )();
@@ -65,6 +67,7 @@ init {
 
     } else {
         println@Console( "Invalid option" )()
+        exit
     }
 
     println@Console( "Welcome " + user.name + "!" )()

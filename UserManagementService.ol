@@ -26,7 +26,7 @@ service UserManagementService() {
     }
 
     main {
-        [registerUser(req)(res)] {
+        [registerUser(req)(res) {
             synchronized( token ) {
                 // Adding user to the list
                 global.users.id[global.user_iter] = global.user_iter
@@ -43,24 +43,29 @@ service UserManagementService() {
                 res.id = global.users.id[global.user_iter]
                 global.user_iter++
             }
-        }
+        }]
 
-        [authUser(req)(res)] {
+        [authUser(req)(res) {
             synchronized( token ) {
                 // Check if the user is in the list
                 found = false
                 j = 0
+                println@Console("Global user iter: " + global.user_iter)()
                 while (found == false && j < global.user_iter) {
+                    println@Console("Checking user: " + global.users.id[j] + " with password: " + global.users.password[j])()
                     if (global.users.id[j] == req.id && global.users.password[j] == req.password) {
                         found = true
                     }
                     j++
                 }
 
+                println@Console("User found: " + found)()
+
                 // Send response
                 res.userRegistered = found
+                println@Console("Response sent: " + res.userRegistered)()
             }
-        }
+        }]
 
         [deleteUser(req)] {
             synchronized( token ) {

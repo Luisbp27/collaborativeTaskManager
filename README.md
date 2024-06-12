@@ -80,7 +80,7 @@ application designed to facilitate efficient task creation, assignment, and trac
   - [x] deleteTask()
   - [x] listAllTasks()
   - [x] listTasksByUser()
-- [ ] User Management Service
+- [x] User Management Service
   - [x] registerUser()
-  - [ ] authUser()
+  - [x] authUser()
   - [x] deleteUser()
