@@ -51,6 +51,7 @@ service UserManagementService() {
                 found = false
                 id = 0
 
+                // While the user is not found and the id is less than the number of users, we keep looking
                 while (found == false && id < global.user_iter) {
                     if (global.users.id[id] == req.id && global.users.name[id] == req.name && global.users.password[id] == req.password) {
                         found = true
@@ -69,6 +70,7 @@ service UserManagementService() {
                 found = false
                 id = 0
 
+                // While the user is not found and the id is less than the number of users, we keep looking
                 while (found == false && id < global.user_iter) {
                     if (global.users.name[id] == req.name) {
                         found = true
@@ -96,10 +98,9 @@ service UserManagementService() {
                 // Send notification
                 notReq.userId = id
                 notReq.message = "User " + users[id].name + " deleted"
-
-                // Delete all the notifications of the deleted user
                 sendNotification@NotificationManager(notReq)
 
+                // Decrement user_iter
                 global.user_iter--
             }
         }

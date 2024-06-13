@@ -20,8 +20,8 @@ service TaskService() {
     }
 
     init {
-        global.task_iter = 0
-        global.tasks = Tasks
+        global.task_iter = 0 // Task iterator
+        global.tasks = Tasks // List of tasks
     }
 
     main {
@@ -46,9 +46,9 @@ service TaskService() {
         }
 
         [modifyTaskUser(req)] {
-            // Search ID task by title
             found = false
             for (j = 1, j <= global.task_iter && found == false, j++) {
+                // If we found a task with the same title
                 if (global.tasks.title[j] == req.title) {
                     // Modify task user
                     global.tasks.assignedTo[j] = req.assignedTo
@@ -61,8 +61,8 @@ service TaskService() {
                 }
             }
 
+            // If we didn't find the task we send a notification
             if (!found) {
-                // Send notification
                 notReq.userId = global.tasks.userId[j]
                 notReq.message = "Task with title: " + req.title + "not found!"
                 sendNotification@NotificationManager(notReq)
@@ -71,15 +71,16 @@ service TaskService() {
 
         [modifyTaskStatus(req)] {
             synchronized( token ) {
+                // Check if there are tasks
                 if (global.task_iter <= 0) {
                     // Send notification
                     notReq.userId = int(req.userId)
                     notReq.message = "No tasks found with title: " + req.title
                     sendNotification@NotificationManager(notReq)
                 } else {
-                    // Search ID task by title
                     found = false
                     for (j = 1, j <= global.task_iter && found == false, j++) {
+                        // If we found a task with the same title we modify the status
                         if (global.tasks.title[j] == req.title) {
                             // Modify task status
                             global.tasks.status[j] = req.status
@@ -104,16 +105,16 @@ service TaskService() {
 
         [deleteTask(req)] {
             synchronized( token ) {
+                // Check if there are tasks
                 if (global.task_iter <= 0) {
                     // Send notification
                     notReq.userId = int(req.userId)
                     notReq.message = "No tasks found with title: " + req.title
                     sendNotification@NotificationManager(notReq)
                 } else {
-
-                    // Search for task by user ID
                     found = false
                     for (j = 1, j <= global.task_iter && found == false, j++) {
+                        // If we found a task with the same title we delete it
                         if (global.tasks.title[j] == req.title) {
                             // Shift the last task to the deleted task position
                             global.tasks.userId[j] = global.tasks.userId[global.task_iter]
@@ -134,8 +135,8 @@ service TaskService() {
                         }
                     }
 
+                    // If we didn't find the task we send a notification
                     if (!found) {
-                        // Send notification
                         notReq.userId = int(req.userId)
                         notReq.message = "Task with title: " + req.title + " not founded to delete it!"
                         sendNotification@NotificationManager(notReq)
@@ -146,6 +147,7 @@ service TaskService() {
 
         [listAllTasks()(tasks) {
             synchronized( token ) {
+                // Check if there are tasks
                 if (global.task_iter <= 0) {
                     tasks = "No tasks found!"
                 } else {
@@ -165,7 +167,7 @@ service TaskService() {
 
         [listTasksByUser(req)(tasks) {
             synchronized( token ) {
-                // Search for tasks by user ID and count them
+                // Search the number of tasks of the user
                 task_iter = 0
                 for (j = 1, j <= global.task_iter, j++) {
                     if (global.tasks.userId[j] == req.userId) {
@@ -177,7 +179,7 @@ service TaskService() {
                 if (task_iter <= 0) {
                     tasks = "No tasks found!"
                 } else {
-                    // List tasks by user
+                    // List tasks
                     tasks = ""
                     for (j = 1, j <= global.task_iter, j++) {
                         if (global.tasks.userId[j] == req.userId) {

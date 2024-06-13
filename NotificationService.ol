@@ -21,16 +21,21 @@ service NotificationService() {
     main {
         [sendNotification(req)] {
             synchronized( token ) {
+                // Save notification
                 global.notifications.userId[global.not_iter] = req.userId
                 global.notifications.message[global.not_iter] = req.message
+
+                // Print notification
                 println@Console("Notification " + global.not_iter + ": " + req.message)()
 
+                // Increment notification counter
                 global.not_iter++
             }
         }
 
         [notificationsHistorialByUser(req)(notifications) {
             synchronized( token ) {
+                // Print all notifications for the user by their id
                 notifications = ""
                 for (j = 0, j < global.not_iter, j++) {
                     if (global.notifications.userId[j] == req.userId) {

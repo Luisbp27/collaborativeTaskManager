@@ -88,7 +88,6 @@ main {
 
     option = "0";
     while (option != "8") {
-        // Menu
         println@Console( "\n####################################" )();
         println@Console( "Select an option:" )();
         println@Console( "1. Create a new task" )();
@@ -102,7 +101,9 @@ main {
         println@Console( "####################################\n" )();
         readLine@Console()(option);
 
+        // Create a new task
         if (option == "1") {
+            // Request data
             println@Console( "Enter your ID:" )();
             readLine@Console()(req1.userId);
             req1.userId = int(req1.userId);
@@ -115,6 +116,7 @@ main {
             println@Console( "Enter who the task is assigned to:" )();
             readLine@Console()(req1.assignedTo);
 
+            // Check if the user is registered in the system
             reqCheck1.name = req1.assignedTo;
             checkUser@UserManager(reqCheck1)(resCheck1);
             if (resCheck1.userRegistered == false) {
@@ -124,40 +126,49 @@ main {
                 createTask@TaskManager(req1)
             }
 
+        // Delete a task
         } else if (option == "2") {
+            // Request data
             println@Console( "Enter the task title you want to delete:" )();
             readLine@Console()(req2.title);
 
             // Delete a task
             deleteTask@TaskManager(req2)
 
+        // List all tasks
         } else if (option == "3") {
-            // List all tasks
             listAllTasks@TaskManager()(res3)
+
             println@Console( "\nID | Title | Description | Date | Assigned to | Status" )();
             println@Console( "--------------------------------------------------------" )();
             println@Console( res3 )()
 
+        // List all tasks assigned to a user
         } else if (option == "4") {
+            // Request data
             println@Console( "Enter user ID:" )();
             readLine@Console()(id);
             req4.userId = int(id);
             println@Console( "Enter a username:" )();
             readLine@Console()(name);
 
+            // Check if the user is registered in the system
             reqCheck4.name = name;
             checkUser@UserManager(reqCheck4)(resCheck4);
             if (resCheck4.userRegistered == false) {
                 println@Console( "The user you want to list their tasks, is not registered" )()
             } else {
-                // List all tasks assigned to a user
+                // List all tasks
                 listTasksByUser@TaskManager(req4)(res4)
+
                 println@Console( "\nID | Title | Description | Date | Assigned to | Status" )();
                 println@Console( "--------------------------------------------------------" )();
                 println@Console( res4 )()
             }
 
+        // Modify task user
         } else if (option == "5") {
+            // Request data
             println@Console( "Enter task title:" )();
             readLine@Console()(reqTask.title);
             println@Console( "Enter username who is assigned now the task:" )();
@@ -176,7 +187,9 @@ main {
                 println@Console( "The user you want to assign this task is not registered" )()
             }
 
+        // Modify task status
         } else if (option == "6") {
+            // Request data
             println@Console( "Enter task title:" )();
             readLine@Console()(req6.title);
             println@Console( "Enter new task status [pending, completed, in-progress, canceled]:" )();
@@ -185,7 +198,9 @@ main {
             // Modify task status
             modifyTaskStatus@TaskManager(req6)
 
+        // Show notifications historial of a user
         } else if (option == "7") {
+            // Request data
             println@Console( "Enter User ID:" )();
             readLine@Console()(req7.userId);
             req7.userId = int(req7.userId);
@@ -194,10 +209,12 @@ main {
 
             // Show notifications historial of a user
             notificationsHistorialByUser@NotificationManager(req7)(res7);
+
             println@Console( "\nID | Message" )();
             println@Console( "----------------" )();
             println@Console( res7 )()
 
+        // Exit
         } else if (option == "8") {
             println@Console( "Goodbye!" )()
 
