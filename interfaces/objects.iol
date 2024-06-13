@@ -24,7 +24,7 @@ type Notifications: void {
 type Task: void {
     id?: int
     userId?: int
-    title: string
+    title?: string
     description?: string
     date?: string
     assignedTo?: string

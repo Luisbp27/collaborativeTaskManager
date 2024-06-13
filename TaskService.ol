@@ -165,7 +165,16 @@ service TaskService() {
 
         [listTasksByUser(req)(tasks) {
             synchronized( token ) {
-                if (global.task_iter <= 0) {
+                // Search for tasks by user ID and count them
+                task_iter = 0
+                for (j = 1, j <= global.task_iter, j++) {
+                    if (global.tasks.userId[j] == req.userId) {
+                        task_iter++
+                    }
+                }
+
+                // Check if there are tasks
+                if (task_iter <= 0) {
                     tasks = "No tasks found!"
                 } else {
                     // List tasks by user
