@@ -137,7 +137,7 @@ service TaskService() {
                     if (!found) {
                         // Send notification
                         notReq.userId = int(req.userId)
-                        notReq.message = "Task with title: " + req.title + "not founded to delete it!"
+                        notReq.message = "Task with title: " + req.title + " not founded to delete it!"
                         sendNotification@NotificationManager(notReq)
                     }
                 }

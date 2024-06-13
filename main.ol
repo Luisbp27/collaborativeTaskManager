@@ -139,10 +139,10 @@ main {
             println@Console( res3 )()
 
         } else if (option == "4") {
-            println@Console( "Enter your ID:" )();
+            println@Console( "Enter user ID:" )();
             readLine@Console()(id);
             req4.userId = int(id);
-            println@Console( "Enter your user name:" )();
+            println@Console( "Enter a username:" )();
             readLine@Console()(name);
 
             reqCheck4.name = name;
@@ -160,7 +160,7 @@ main {
         } else if (option == "5") {
             println@Console( "Enter task title:" )();
             readLine@Console()(reqTask.title);
-            println@Console( "Enter user name who is assigned now the task:" )();
+            println@Console( "Enter username who is assigned now the task:" )();
             readLine@Console()(reqTask.assignedTo);
             println@Console( "Enter user ID who is assigned now the task:" )();
             readLine@Console()(reqTask.userId);
