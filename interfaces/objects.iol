@@ -45,7 +45,7 @@ type UserRequest1: void {
 }
 
 type UserRequest2: void {
-    id: int
+    id?: int
     name: string
     password?: string
 }
