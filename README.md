@@ -70,4 +70,5 @@ During the development of this project I stayed in contact with the Jolie Commun
 - [x] User Management Service
   - [x] registerUser()
   - [x] authUser()
+  - [x] checkUser()
   - [x] deleteUser()
