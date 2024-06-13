@@ -125,7 +125,7 @@ service TaskService() {
                 // List all tasks
                 tasks = ""
                 for (j = 0, j < global.task_iter, j++) {
-                    tasks = tasks + " " + global.tasks.id[j] +
+                    tasks += " " + global.tasks.id[j] +
                             " " + global.tasks.title[j] +
                             " " + global.tasks.description[j] +
                             " " + global.tasks.date[j] +
@@ -141,7 +141,7 @@ service TaskService() {
                 tasks = ""
                 for (j = 0, j < global.task_iter, j++) {
                     if (global.tasks.userId[j] == req.userId) {
-                        tasks = tasks + " " + global.tasks.id[j] +
+                        tasks += " " + global.tasks.id[j] +
                             " " + global.tasks.title[j] +
                             " " + global.tasks.description[j] +
                             " " + global.tasks.date[j] +

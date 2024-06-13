@@ -29,16 +29,15 @@ service NotificationService() {
             }
         }
 
-        [notificationsHistorialByUser(req)] {
+        [notificationsHistorialByUser(req)(notifications) {
             synchronized( token ) {
-                println@Console("Showing notifications for user " + req.name + "\n")()
-
+                notifications = ""
                 for (j = 0, j < global.not_iter, j++) {
                     if (global.notifications.userId[j] == req.userId) {
-                        println@Console("Notification Nº" + j + ": " + global.notifications.message[j])()
+                        notifications += j + "   " + global.notifications.message[j] + "\n"
                     }
                 }
             }
-        }
+        }]
     }
 }

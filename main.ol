@@ -172,7 +172,10 @@ main {
             readLine@Console()(req7.name);
 
             // Show notifications historial of a user
-            notificationsHistorialByUser@NotificationManager(req7)
+            notificationsHistorialByUser@NotificationManager(req7)(res7);
+            println@Console( "\nID | Message" )();
+            println@Console( "----------------" )();
+            println@Console( res7 )()
 
         } else if (option == "8") {
             println@Console( "Goodbye!" )()
