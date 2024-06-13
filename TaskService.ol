@@ -101,7 +101,6 @@ service TaskService() {
                         // If there is only one task, delete it
                         if (global.task_iter == 1) {
                             global.task_iter--
-                            println@Console( "Task deleted successfully!" )()
                         } else {
                             // Shift the last task to the deleted task position
                             global.tasks.userId[j] = global.tasks.userId[global.task_iter]
@@ -112,7 +111,6 @@ service TaskService() {
                             global.tasks.status[j] = global.tasks.status[global.task_iter]
 
                             global.task_iter--
-                            println@Console( "Task deleted successfully!" )()
                         }
                     } else {
                         println@Console( "Task not found!" )()
@@ -122,43 +120,36 @@ service TaskService() {
             }
         }
 
-        [listAllTasks()] {
+        [listAllTasks()(tasks) {
             synchronized( token ) {
                 // List all tasks
-                println@Console( "Listing all tasks...\n" )()
-
+                tasks = ""
                 for (j = 0, j < global.task_iter, j++) {
-                    println@Console(
-                        "Task ID: " + global.tasks.id[j] +
-                        "\nUser ID: " + global.tasks.userId[j] +
-                        "\nTitle: " + global.tasks.title[j] +
-                        "\nDescription: " + global.tasks.description[j] +
-                        "\nDate: " + global.tasks.date[j] +
-                        "\nAssigned to: " + global.tasks.assignedTo[j] +
-                        "\nStatus: " + global.tasks.status[j] + "\n"
-                    )()
+                    tasks = tasks + " " + global.tasks.id[j] +
+                            " " + global.tasks.title[j] +
+                            " " + global.tasks.description[j] +
+                            " " + global.tasks.date[j] +
+                            " " + global.tasks.assignedTo[j] +
+                            " " + global.tasks.status[j] + "\n"
                 }
             }
-        }
+        }]
 
-        [listTasksByUser(req)] {
+        [listTasksByUser(req)(tasks) {
             synchronized( token ) {
                 // List tasks by user
-                println@Console("Listing tasks by user ID: " + req.userId)()
-
+                tasks = ""
                 for (j = 0, j < global.task_iter, j++) {
                     if (global.tasks.userId[j] == req.userId) {
-                        println@Console(
-                            "Task ID: " + global.tasks.id[j] +
-                            "\nTitle: " + global.tasks.title[j] +
-                            "\nDescription: " + global.tasks.description[j] +
-                            "\nDate: " + global.tasks.date[j] +
-                            "\nAssigned to: " + global.tasks.assignedTo[j] +
-                            "\nStatus: " + global.tasks.status[j] + "\n"
-                        )()
+                        tasks = tasks + " " + global.tasks.id[j] +
+                            " " + global.tasks.title[j] +
+                            " " + global.tasks.description[j] +
+                            " " + global.tasks.date[j] +
+                            " " + global.tasks.assignedTo[j] +
+                            " " + global.tasks.status[j] + "\n"
                     }
                 }
             }
-        }
+        }]
     }
 }

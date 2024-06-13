@@ -11,9 +11,10 @@ interface TaskServiceInterface {
         createTask(Task),
         modifyTaskUser(Task),
         modifyTaskStatus(Task),
-        deleteTask(Task),
-        listAllTasks(void),
-        listTasksByUser(Task)
+        deleteTask(Task)
+    RequestResponse:
+        listAllTasks(void)(string),
+        listTasksByUser(Task)(string)
 }
 
 interface UserManagementInterface {

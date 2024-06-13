@@ -117,7 +117,10 @@ main {
 
         } else if (option == "3") {
             // List all tasks
-            listAllTasks@TaskManager()
+            listAllTasks@TaskManager()(res3)
+            println@Console( "\nID | Title | Description | Date | Assigned to | Status" )();
+            println@Console( "--------------------------------------------------------" )();
+            println@Console( res3 )()
 
         } else if (option == "4") {
             println@Console( "Enter User ID:" )();
@@ -125,7 +128,10 @@ main {
             req4.userId = int(req4.userId);
 
             // List all tasks assigned to a user
-            listTasksByUser@TaskManager(req4)
+            listTasksByUser@TaskManager(req4)(res4)
+            println@Console( "\nID | Title | Description | Date | Assigned to | Status" )();
+            println@Console( "--------------------------------------------------------" )();
+            println@Console( res4 )()
 
         } else if (option == "5") {
             println@Console( "Enter task title:" )();
