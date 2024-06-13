@@ -1,8 +1,8 @@
 # Collaborative Task Manager
 
-## Service Oriented Software Engineering - Università di Bologna
+## Service Oriented Software Engineering - University of Bologna
 
-### Tutors: Prof. Ivan Lanese, Prof. Davide Rossi
+### Tutors: Prof. Ivan Lanese, Prof. Davide Rossi
 
 #### Author: Lluis Barca Pons
 
@@ -51,7 +51,7 @@ jolie Main.ol
 
 In `Terminal 4` you could interact with the application.
 
-## Collaboration to Jolie Repository
+## Collaboration to Jolie Repository
 
 During the development of this project I stayed in contact with the Jolie Community via Discord and I did some [contributions](https://github.com/Luisbp27/docs) to the documentation of the language.
 
