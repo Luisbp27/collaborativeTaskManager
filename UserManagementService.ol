@@ -70,7 +70,7 @@ service UserManagementService() {
                 id = 0
 
                 while (found == false && id < global.user_iter) {
-                    if (global.users.id[id] == req.id && global.users.name[id] == req.name) {
+                    if (global.users.name[id] == req.name) {
                         found = true
                     }
                     id++
