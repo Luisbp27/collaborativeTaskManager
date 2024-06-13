@@ -23,11 +23,11 @@ type Notifications: void {
 
 type Task: void {
     id?: int
-    userId: int
+    userId?: int
     title: string
-    description: string
-    date: string
-    assignedTo: string
+    description?: string
+    date?: string
+    assignedTo?: string
     status?: string(enum(["pending", "completed", "in-progress", "canceled"]))
 }
 
@@ -46,7 +46,8 @@ type UserRequest1: void {
 
 type UserRequest2: void {
     id: int
-    password: string
+    name: string
+    password?: string
 }
 
 type UserResponse1: void {

@@ -7,6 +7,12 @@ service TaskService() {
 
     execution: concurrent
 
+    outputPort NotificationManager {
+        location: "socket://localhost:1236"
+        protocol: http
+        interfaces: NotificationInterface
+    }
+
     inputPort TaskServicePort {
         location: "socket://localhost:1234"
         protocol: http
@@ -22,7 +28,6 @@ service TaskService() {
         [createTask(req)] {
             synchronized( token ) {
                 // Store task in a list of tasks
-                println@Console( "Creating task..." )()
                 global.tasks.id[global.task_iter] = global.task_iter
                 global.tasks.userId[global.task_iter] = req.userId
                 global.tasks.title[global.task_iter] = req.title
@@ -30,7 +35,11 @@ service TaskService() {
                 global.tasks.date[global.task_iter] = req.date
                 global.tasks.assignedTo[global.task_iter] = req.assignedTo
                 global.tasks.status[global.task_iter] = "in-progress"
-                println@Console( "Task created successfully!" )()
+
+                // Send notification
+                notReq.userId = global.tasks.userId[global.task_iter]
+                notReq.message = "Task with ID: " + global.tasks.id[global.task_iter] + " created successfully by user ID: " + global.tasks.userId[global.task_iter]
+                sendNotification@NotificationManager(notReq)
 
                 global.task_iter++
             }
@@ -44,12 +53,19 @@ service TaskService() {
                     // Modify task user
                     global.tasks.assignedTo[j] = req.assignedTo
                     found = true
-                    println@Console( "Task user modified successfully!" )()
+
+                    // Send notification
+                    notReq.userId = global.tasks.userId[j]
+                    notReq.message = "Task with ID: " + global.tasks.id[j] + " assigned to user ID: " + global.tasks.assignedTo[j]
+                    sendNotification@NotificationManager(notReq)
                 }
             }
 
             if (!found) {
-                println@Console( "Task not found!" )()
+                // Send notification
+                notReq.userId = global.tasks.userId[j]
+                notReq.message = "Task with title: " + req.title + "not found!"
+                sendNotification@NotificationManager(notReq)
             }
         }
 
@@ -61,12 +77,19 @@ service TaskService() {
                     // Modify task status
                     global.tasks.status[j] = req.status
                     found = true
-                    println@Console( "Task status modified successfully!" )()
+
+                    // Send notification
+                    notReq.userId = global.tasks.userId[j]
+                    notReq.message = "Task with ID: " + global.tasks.id[j] + " status changed to: " + global.tasks.status[j]
+                    sendNotification@NotificationManager(notReq)
                 }
             }
 
             if (!found) {
-                println@Console( "Task not found!" )()
+                // Send notification
+                notReq.userId = global.tasks.userId[j]
+                notReq.message = "Task with title: " + req.title + "not found!"
+                sendNotification@NotificationManager(notReq)
             }
         }
 

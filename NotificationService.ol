@@ -40,16 +40,5 @@ service NotificationService() {
                 }
             }
         }
-
-        [deleteAllNotificationsByUser(req)] {
-            synchronized( token ) {
-                for (j = 0, j < global.not_iter, j++) {
-                    if (global.notifications.userId[j] == req.userId) {
-                        global.notifications.userId[j] = ""
-                        global.notifications.message[j] = ""
-                    }
-                }
-            }
-        }
     }
 }

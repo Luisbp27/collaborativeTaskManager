@@ -30,47 +30,47 @@ init {
         println@Console( "Enter your ID:" )();
         readLine@Console()(req.id);
         req.id = int(req.id);
+        println@Console( "Enter username:" )();
+        readLine@Console()(req.name);
         println@Console( "Enter password:" )();
         readLine@Console()(req.password);
 
         // Check if the user is registered in the system
         authUser@UserManager(req)(res);
 
-        println@Console( "Found value: " +res.userRegistered )();
-
         if (res.userRegistered == false) {
-            println@Console( "User not found. Registering a new user..." )();
+            println@Console( "\nUser not found. Registering a new user..." )();
             println@Console( "Enter username:" )();
-            readLine@Console()(user.name);
+            readLine@Console()(req.name);
             println@Console( "Enter password:" )();
-            readLine@Console()(user.password);
+            readLine@Console()(req.password);
             println@Console( "Enter email:" )();
-            readLine@Console()(user.email);
+            readLine@Console()(req.email);
 
             // User registration
-            registerUser@UserManager(user)(res);
+            registerUser@UserManager(req)(res);
             println@Console( "User registered correctly, your ID is: " + res.id )()
         }
 
     } else if (answer == "n") {
         println@Console( "Registering a new user..." )();
         println@Console( "Enter username:" )();
-        readLine@Console()(user.name);
+        readLine@Console()(reqNew.name);
         println@Console( "Enter password:" )();
-        readLine@Console()(user.password);
+        readLine@Console()(reqNew.password);
         println@Console( "Enter email:" )();
-        readLine@Console()(user.email);
+        readLine@Console()(reqNew.email);
 
         // User registration
-        registerUser@UserManager(user)(res);
-        println@Console( "User registered correctly, your ID is: " + res.id )()
+        registerUser@UserManager(reqNew)(resNew);
+        println@Console( "User registered correctly, your ID is: " + resNew.id )()
 
     } else {
         println@Console( "Invalid option" )()
         exit
     }
 
-    println@Console( "Welcome " + user.name + "!" )()
+    println@Console( "Welcome!" )()
 }
 
 main {
@@ -93,27 +93,27 @@ main {
 
         if (option == "1") {
             println@Console( "Enter your ID:" )();
-            readLine@Console()(req.userId);
-            req.userId = int(req.userId);
+            readLine@Console()(req1.userId);
+            req1.userId = int(req1.userId);
             println@Console( "Enter task title:" )();
-            readLine@Console()(req.title);
+            readLine@Console()(req1.title);
             println@Console( "Enter task description:" )();
-            readLine@Console()(req.description);
+            readLine@Console()(req1.description);
             println@Console( "Enter today date (format: DD/MM/YYYY):" )();
-            readLine@Console()(req.date);
+            readLine@Console()(req1.date);
             println@Console( "Enter who the task is assigned to:" )();
-            readLine@Console()(req.assignedTo);
+            readLine@Console()(req1.assignedTo);
 
             // Create a new task
-            createTask@TaskManager(req)
+            createTask@TaskManager(req1)
             println@Console( "Task created correctly!" )()
 
         } else if (option == "2") {
             println@Console( "Enter Task title:" )();
-            readLine@Console()(req.title);
+            readLine@Console()(req2.title);
 
             // Delete a task
-            deleteTask@TaskManager(req)
+            deleteTask@TaskManager(req2)
 
         } else if (option == "3") {
             // List all tasks
@@ -121,41 +121,52 @@ main {
 
         } else if (option == "4") {
             println@Console( "Enter User ID:" )();
-            readLine@Console()(req.userId);
-            req.userId = int(req.userId);
+            readLine@Console()(req4.userId);
+            req4.userId = int(req4.userId);
 
             // List all tasks assigned to a user
-            listTasksByUser@TaskManager(req)
+            listTasksByUser@TaskManager(req4)
 
         } else if (option == "5") {
             println@Console( "Enter task title:" )();
-            readLine@Console()(req.title);
-            println@Console( "Enter new task user:" )();
-            readLine@Console()(req.assignedTo);
+            readLine@Console()(reqTask.title);
+            println@Console( "Enter user name who is assigned now the task:" )();
+            readLine@Console()(reqTask.assignedTo);
+            req5.name = reqTask.assignedTo;
+            println@Console( "Enter user ID who is assigned now the task:" )();
+            readLine@Console()(reqTask.userId);
+            reqTask.userId = int(reqTask.userId);
+            req5.id = reqTask.userId;
 
-            // Modify task user
-            modifyTaskUser@TaskManager(req);
-            println@Console( "Task user modified correctly!" )()
+            // Check if the user is registered in the system
+            checkUser@UserManager(req5)(res5);
+            if (res5.userRegistered == true) {
+                // Modify task user
+                modifyTaskUser@TaskManager(reqTask);
+                println@Console( "Task user modified correctly!" )()
+            } else {
+                println@Console( "The user you want to assign this task is not registered" )()
+            }
 
         } else if (option == "6") {
             println@Console( "Enter task title:" )();
-            readLine@Console()(req.title);
+            readLine@Console()(req6.title);
             println@Console( "Enter new task status [pending, completed, in-progress, canceled]:" )();
-            readLine@Console()(req.status);
+            readLine@Console()(req6.status);
 
             // Modify task status
-            modifyTaskStatus@TaskManager(req);
+            modifyTaskStatus@TaskManager(req6);
             println@Console( "Task status modified correctly!" )()
 
         } else if (option == "7") {
             println@Console( "Enter User ID:" )();
-            readLine@Console()(req.userId);
-            req.userId = int(req.userId);
+            readLine@Console()(req7.userId);
+            req7.userId = int(req7.userId);
             println@Console( "Enter username:" )();
-            readLine@Console()(req.name);
+            readLine@Console()(req7.name);
 
             // Show notifications historial of a user
-            notificationsHistorialByUser@NotificationManager(req)
+            notificationsHistorialByUser@NotificationManager(req7)
 
         } else if (option == "8") {
             println@Console( "Goodbye!" )()

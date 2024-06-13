@@ -49,42 +49,56 @@ service UserManagementService() {
             synchronized( token ) {
                 // Check if the user is in the list
                 found = false
-                j = 0
-                println@Console("Global user iter: " + global.user_iter)()
-                while (found == false && j < global.user_iter) {
-                    println@Console("Checking user: " + global.users.id[j] + " with password: " + global.users.password[j])()
-                    if (global.users.id[j] == req.id && global.users.password[j] == req.password) {
+                id = 0
+
+                while (found == false && id < global.user_iter) {
+                    if (global.users.id[id] == req.id && global.users.name[id] == req.name && global.users.password[id] == req.password) {
                         found = true
                     }
-                    j++
+                    id++
                 }
-
-                println@Console("User found: " + found)()
 
                 // Send response
                 res.userRegistered = found
-                println@Console("Response sent: " + res.userRegistered)()
+            }
+        }]
+
+        [checkUser(req)(res) {
+            synchronized( token ) {
+                // Check if the user is in the list
+                found = false
+                id = 0
+
+                while (found == false && id < global.user_iter) {
+                    if (global.users.id[id] == req.id && global.users.name[id] == req.name) {
+                        found = true
+                    }
+                    id++
+                }
+
+                // Send response
+                res.userRegistered = found
             }
         }]
 
         [deleteUser(req)] {
             synchronized( token ) {
-                j = req.id
+                id = req.id
 
                 // Delete user
-                users[j].name = ""
-                users[j].id = -1
+                users.name[id] = ""
+                users.id[id] = -1
 
                 // Get the last user and move it to the deleted user position
-                users[j].name = users[global.user_iter].name
-                users[j].id = users[global.user_iter].id
+                users.name[id] = users.name[global.user_iter]
+                users.id[id] = users.id[global.user_iter]
 
                 // Send notification
-                notReq.userId = j
-                notReq.message = "User " + users[j].name + " deleted"
+                notReq.userId = id
+                notReq.message = "User " + users[id].name + " deleted"
 
                 // Delete all the notifications of the deleted user
-                deleteAllNotificationsByUser@NotificationManager(notReq)
+                sendNotification@NotificationManager(notReq)
 
                 global.user_iter--
             }
