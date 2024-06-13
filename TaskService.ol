@@ -27,6 +27,8 @@ service TaskService() {
     main {
         [createTask(req)] {
             synchronized( token ) {
+                global.task_iter++
+
                 // Store task in a list of tasks
                 global.tasks.id[global.task_iter] = global.task_iter
                 global.tasks.userId[global.task_iter] = req.userId
@@ -40,15 +42,13 @@ service TaskService() {
                 notReq.userId = global.tasks.userId[global.task_iter]
                 notReq.message = "Task with ID: " + global.tasks.id[global.task_iter] + " created successfully by user ID: " + global.tasks.userId[global.task_iter]
                 sendNotification@NotificationManager(notReq)
-
-                global.task_iter++
             }
         }
 
         [modifyTaskUser(req)] {
             // Search ID task by title
             found = false
-            for (j = 0, j < global.task_iter, j++) {
+            for (j = 1, j <= global.task_iter && found == false, j++) {
                 if (global.tasks.title[j] == req.title) {
                     // Modify task user
                     global.tasks.assignedTo[j] = req.assignedTo
@@ -70,38 +70,51 @@ service TaskService() {
         }
 
         [modifyTaskStatus(req)] {
-            // Search ID task by title
-            found = false
-            for (j = 0, j < global.task_iter, j++) {
-                if (global.tasks.title[j] == req.title) {
-                    // Modify task status
-                    global.tasks.status[j] = req.status
-                    found = true
-
+            synchronized( token ) {
+                if (global.task_iter <= 0) {
                     // Send notification
-                    notReq.userId = global.tasks.userId[j]
-                    notReq.message = "Task with ID: " + global.tasks.id[j] + " status changed to: " + global.tasks.status[j]
+                    notReq.userId = int(req.userId)
+                    notReq.message = "No tasks found with title: " + req.title
                     sendNotification@NotificationManager(notReq)
-                }
-            }
+                } else {
+                    // Search ID task by title
+                    found = false
+                    for (j = 1, j <= global.task_iter && found == false, j++) {
+                        if (global.tasks.title[j] == req.title) {
+                            // Modify task status
+                            global.tasks.status[j] = req.status
+                            found = true
 
-            if (!found) {
-                // Send notification
-                notReq.userId = global.tasks.userId[j]
-                notReq.message = "Task with title: " + req.title + "not found!"
-                sendNotification@NotificationManager(notReq)
+                            // Send notification
+                            notReq.userId = global.tasks.userId[j]
+                            notReq.message = "Task with ID: " + global.tasks.id[j] + " status changed to: " + global.tasks.status[j]
+                            sendNotification@NotificationManager(notReq)
+                        }
+                    }
+
+                    if (!found) {
+                        // Send notification
+                        notReq.userId = global.tasks.userId[j]
+                        notReq.message = "Task with title: " + req.title + "not found!"
+                        sendNotification@NotificationManager(notReq)
+                    }
+                }
             }
         }
 
         [deleteTask(req)] {
             synchronized( token ) {
-                // Search for task by user ID
-                for (j = 0, j < global.task_iter, j++) {
-                    if (global.tasks.title[j] == req.title) {
-                        // If there is only one task, delete it
-                        if (global.task_iter == 1) {
-                            global.task_iter--
-                        } else {
+                if (global.task_iter <= 0) {
+                    // Send notification
+                    notReq.userId = int(req.userId)
+                    notReq.message = "No tasks found with title: " + req.title
+                    sendNotification@NotificationManager(notReq)
+                } else {
+
+                    // Search for task by user ID
+                    found = false
+                    for (j = 1, j <= global.task_iter && found == false, j++) {
+                        if (global.tasks.title[j] == req.title) {
                             // Shift the last task to the deleted task position
                             global.tasks.userId[j] = global.tasks.userId[global.task_iter]
                             global.tasks.title[j] = global.tasks.title[global.task_iter]
@@ -110,43 +123,62 @@ service TaskService() {
                             global.tasks.assignedTo[j] = global.tasks.assignedTo[global.task_iter]
                             global.tasks.status[j] = global.tasks.status[global.task_iter]
 
+                            found = true
+
+                            // Send notification
+                            notReq.userId = int(req.userId)
+                            notReq.message = "Task with title: " + req.title + " deleted successfully!"
+                            sendNotification@NotificationManager(notReq)
+
                             global.task_iter--
                         }
-                    } else {
-                        println@Console( "Task not found!" )()
+                    }
+
+                    if (!found) {
+                        // Send notification
+                        notReq.userId = int(req.userId)
+                        notReq.message = "Task with title: " + req.title + "not founded to delete it!"
+                        sendNotification@NotificationManager(notReq)
                     }
                 }
-
             }
         }
 
         [listAllTasks()(tasks) {
             synchronized( token ) {
-                // List all tasks
-                tasks = ""
-                for (j = 0, j < global.task_iter, j++) {
-                    tasks += " " + global.tasks.id[j] +
-                            " " + global.tasks.title[j] +
-                            " " + global.tasks.description[j] +
-                            " " + global.tasks.date[j] +
-                            " " + global.tasks.assignedTo[j] +
-                            " " + global.tasks.status[j] + "\n"
+                if (global.task_iter <= 0) {
+                    tasks = "No tasks found!"
+                } else {
+                    // List all tasks
+                    tasks = ""
+                    for (j = 1, j <= global.task_iter, j++) {
+                        tasks += " " + global.tasks.id[j] +
+                                " " + global.tasks.title[j] +
+                                " " + global.tasks.description[j] +
+                                " " + global.tasks.date[j] +
+                                " " + global.tasks.assignedTo[j] +
+                                " " + global.tasks.status[j] + "\n"
+                    }
                 }
             }
         }]
 
         [listTasksByUser(req)(tasks) {
             synchronized( token ) {
-                // List tasks by user
-                tasks = ""
-                for (j = 0, j < global.task_iter, j++) {
-                    if (global.tasks.userId[j] == req.userId) {
-                        tasks += " " + global.tasks.id[j] +
-                            " " + global.tasks.title[j] +
-                            " " + global.tasks.description[j] +
-                            " " + global.tasks.date[j] +
-                            " " + global.tasks.assignedTo[j] +
-                            " " + global.tasks.status[j] + "\n"
+                if (global.task_iter <= 0) {
+                    tasks = "No tasks found!"
+                } else {
+                    // List tasks by user
+                    tasks = ""
+                    for (j = 1, j <= global.task_iter, j++) {
+                        if (global.tasks.userId[j] == req.userId) {
+                            tasks += " " + global.tasks.id[j] +
+                                " " + global.tasks.title[j] +
+                                " " + global.tasks.description[j] +
+                                " " + global.tasks.date[j] +
+                                " " + global.tasks.assignedTo[j] +
+                                " " + global.tasks.status[j] + "\n"
+                        }
                     }
                 }
             }
